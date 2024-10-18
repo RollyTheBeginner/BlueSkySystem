@@ -1,0 +1,121 @@
+﻿@model CashAdvance
+@{
+
+}
+
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h2 class="text-center mb-5">Details</h2>
+
+        <dl class="row mb-0">
+            <dt class="col-sm-4 col-form-label">First Name:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.FirstName)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Middle Name:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.MiddleName)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Last Name:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.LastName)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Full Name:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.FullName)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Department:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.Department)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Date Submitted:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.DateSubmitted)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Date Required:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.DateRequired)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Purpose:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.Purpose)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Amount:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.Amount)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Electronic Signature:</dt>
+            <dd class="col-sm-8">
+                <img src="/ESignature/@Html.DisplayFor(m => m.ImageFileName1)" width="150" alt="Electronic Signature" />
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Cover Letter:</dt>
+            <dd class="col-sm-8">
+                @if (!string.IsNullOrEmpty(Model.CoverLetterName))
+                {
+                    // Display the file name as a label
+                    <span>@Model.CoverLetterName</span>
+                    <a href="@Url.Action("DownloadCoverLetter", "CashAdvances", new { filename = Model.CoverLetterName })" class="btn btn-link">Download Cover Letter</a>
+                }
+                else
+                {
+                    <span>No cover letter uploaded.</span>
+                }
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Created By:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.CreatedById)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Created On:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.CreatedOn)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Modified By:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.ModifiedById)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Modified On:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.ModifiedOn)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Recommending Approval:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.RecommendingApprovalId)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Approved By:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.ApprovedById)
+            </dd>
+
+            <dt class="col-sm-4 col-form-label">Amount Received By:</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.AmountReceivedby)
+            </dd>
+
+        </dl>
+
+        <div class="row mt-4">
+            <div class="col-sm-6 d-grid">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            </div>
+            <div class="col-sm-6 d-grid">
+                <a class="btn btn-outline-primary" asp-controller="CashAdvances" asp-action="Index" role="button">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
