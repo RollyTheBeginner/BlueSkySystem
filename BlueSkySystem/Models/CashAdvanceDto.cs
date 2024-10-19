@@ -11,7 +11,7 @@ namespace BlueSkySystem.Models
 
         [Required(ErrorMessage = "Middle Name is required.")]
         [Display(Name = "Middle Name")]
-        public string MiddleName { get; set; }
+        public string? MiddleName { get; set; }
 
 
         [Required(ErrorMessage = "Last Name is required.")]
@@ -47,6 +47,15 @@ namespace BlueSkySystem.Models
 
         [Display(Name = "Cover Letter (Requester)")]
         public IFormFile? CoverLetter { get; set; }
+
+        [Display(Name = "Amount Received by:")]
+        public string? AmountReceivedby { get; set; }
+
+        public int? CashAdvanceStatusId { get; set; }
+
+        public CashAdvanceStatus? CashAdvanceStatus { get; set; }
+        
+        
 
         /*
         [Display(Name = "Electronic Signature (Recommending Approval)")]

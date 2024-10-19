@@ -21,10 +21,10 @@
             <th>Amount</th>
             <th>E-signature</th>
             <th>Cover Letter</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
-
     <tbody>
         @foreach (var cashadvances in Model)
         {
@@ -54,7 +54,7 @@
                         <span>No cover letter uploaded</span>
                     }
                 </td>
-
+                <td>@cashadvances.CashAdvanceStatus?.Name</td> <!---- Display the Status Name -->
                 <td>
                     <div class="input-group">
                         <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
@@ -69,6 +69,9 @@
                             </li>
                             <li class="dropdown-item">
                                 <a asp-action="Delete" asp-route-id="@cashadvances.Id" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="bi bi-trash"></i> Delete</a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="btn btn-success btn-sm"><i class="bi bi-check"></i> Approve</a>
                             </li>
                         </ul>
                     </div>

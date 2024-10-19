@@ -97,7 +97,19 @@
                     <span asp-validation-for="CoverLetter" class="text-danger"></span>
                 </div>
             </div>
-            
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Amount Received by:</label>
+                <div class="col-sm-8">
+                    <select class="form-select" asp-for="AmountReceivedby">
+                        <option value="Cash">Cash</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
             <!----------------
              (signInManager.IsSignedIn(User) && (User.IsInRole("Department Head")))
             {

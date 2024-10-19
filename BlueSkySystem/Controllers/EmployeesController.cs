@@ -49,6 +49,7 @@ namespace BlueSkySystem.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
+
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }

@@ -1,6 +1,7 @@
 ﻿using BlueSkySystem.Data;
 using BlueSkySystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
@@ -20,7 +21,10 @@ namespace BlueSkySystem.Controllers
 
         public IActionResult Index()
         {
-            var cashadvances = context.CashAdvances.OrderByDescending(ca => ca.Id).ToList();
+            var cashadvances = context.CashAdvances
+       .Include(ca => ca.CashAdvanceStatus) // Include related status
+       .OrderByDescending(ca => ca.Id)
+       .ToList();
             return View(cashadvances);
         }
 
@@ -44,6 +48,7 @@ namespace BlueSkySystem.Controllers
         }
         public IActionResult Create()
         {
+            
             return View();
         }
 
@@ -51,11 +56,23 @@ namespace BlueSkySystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CashAdvanceDto cashadvanceDto)
         {
+
             // Get the current logged-in user's ID
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             // Retrieve the current user from the database
             var currentUser = await context.Users.FindAsync(userId);
+
+            var pendingStatus = await context.CashAdvanceStatuses.FirstOrDefaultAsync(x => x.Name == "Pending Status");
+
+            if (pendingStatus != null)
+            {
+                cashadvanceDto.CashAdvanceStatusId = pendingStatus.Id;
+            }
+            else
+            {
+                ModelState.AddModelError("Status", "Pending status does not exist.");
+            }
 
             // Check if the user exists
             if (currentUser == null)
@@ -80,6 +97,7 @@ namespace BlueSkySystem.Controllers
             {
                 return View(cashadvanceDto);
             }
+
 
             // Save the image file with a unique name
             string newFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.ImageFile1.FileName);
@@ -114,7 +132,10 @@ namespace BlueSkySystem.Controllers
                 CreatedById = currentUser.FullName,  // Use FullName or FirstName as needed
                 CreatedOn = DateTime.Now,
                 CoverLetterName = coverLetterOriginalFileName, // Assuming you have this property
+                AmountReceivedby = cashadvanceDto.AmountReceivedby,
+                CashAdvanceStatusId = cashadvanceDto.CashAdvanceStatusId,
             };
+
 
             // Add to the context and save changes asynchronously
             context.CashAdvances.Add(newCashAdvance);
@@ -145,6 +166,7 @@ namespace BlueSkySystem.Controllers
                 DateRequired = cashadvances.DateRequired,
                 Purpose = cashadvances.Purpose,
                 Amount = cashadvances.Amount,
+                AmountReceivedby = cashadvances.AmountReceivedby,
             };
 
             ViewData["CreatedById"] = cashadvances.CreatedById;
@@ -189,7 +211,7 @@ namespace BlueSkySystem.Controllers
                 return NotFound("User not found");
             }
 
-            
+
 
             //update the image file if we have a new image file
             string newFileName = cashadvances.ImageFileName1;
@@ -245,6 +267,7 @@ namespace BlueSkySystem.Controllers
             cashadvances.CoverLetterName = coverLetterOriginalFileName;
             cashadvances.ModifiedById = currentUser.FullName;
             cashadvances.ModifiedOn = DateTime.Now;
+            cashadvances.AmountReceivedby = cashadvanceDto.AmountReceivedby;
 
             context.SaveChanges();
 
@@ -267,6 +290,27 @@ namespace BlueSkySystem.Controllers
             return RedirectToAction("Index", "CashAdvances");
 
         }
+
+
+        public async Task<IActionResult> ApproveCashAdvance(int id)
+        {
+            var cashAdvance = await context.CashAdvances.FindAsync(id);
+            if (cashAdvance == null)
+            {
+                return NotFound();
+            }
+
+            var approvedStatus = await context.CashAdvanceStatuses.FirstOrDefaultAsync(s => s.Name == "Approved");
+            if (approvedStatus != null)
+            {
+                cashAdvance.CashAdvanceStatusId = approvedStatus.Id;
+                await context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
         public IActionResult DownloadCoverLetter(string filename)
         {
             if (string.IsNullOrEmpty(filename))
