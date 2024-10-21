@@ -1,5 +1,6 @@
 ﻿using BlueSkySystem.Data;
 using BlueSkySystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 
 namespace BlueSkySystem.Controllers
 {
+    [Authorize]
     public class CashAdvancesController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -19,6 +21,7 @@ namespace BlueSkySystem.Controllers
             this.environment = environment;
         }
 
+        [Authorize(Roles = "Admin, Department Head")]
         public IActionResult Index()
         {
             var cashadvances = context.CashAdvances
@@ -27,6 +30,42 @@ namespace BlueSkySystem.Controllers
        .ToList();
             return View(cashadvances);
         }
+
+        [Authorize(Roles = "Admin, Department Head")]
+        public IActionResult PendingList()
+        {
+            var cashadvances = context.CashAdvances
+                .Include(ca => ca.CashAdvanceStatus) // Include related status
+                .Where(ca => ca.CashAdvanceStatus.Name == "Pending Status") // Filter by pending status
+                .OrderByDescending(ca => ca.Id)
+                .ToList();
+            return View(cashadvances);
+        }
+
+        [Authorize(Roles = "Admin, Department Head")]
+        public IActionResult ApprovedList()
+        {
+            var cashadvances = context.CashAdvances
+                .Include(ca => ca.CashAdvanceStatus) // Include related status
+                .Where(ca => ca.CashAdvanceStatus.Name == "Approved") // Filter by approved status
+                .OrderByDescending(ca => ca.Id)
+                .ToList();
+
+            return View(cashadvances);
+        }
+
+        [Authorize(Roles = "Admin, Department Head")]
+        public IActionResult RejectedList()
+        {
+            var cashadvances = context.CashAdvances
+                .Include(ca => ca.CashAdvanceStatus) // Include related status
+                .Where(ca => ca.CashAdvanceStatus.Name == "Rejected") // Filter by rejected status
+                .OrderByDescending(ca => ca.Id)
+                .ToList();
+
+            return View(cashadvances);
+        }
+
 
         // GET: CashAdvance/Details
 
@@ -48,7 +87,6 @@ namespace BlueSkySystem.Controllers
         }
         public IActionResult Create()
         {
-            
             return View();
         }
 
@@ -309,6 +347,31 @@ namespace BlueSkySystem.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        public async Task<IActionResult> RejectCashAdvance(int id)
+        {
+            // Await for the async call
+            var cashAdvance = await context.CashAdvances.FirstOrDefaultAsync(c => c.Id == id);
+            if (cashAdvance == null)
+            {
+                return NotFound();
+            }
+
+            // Await for the async call and check for null correctly
+            var rejectStatus = await context.CashAdvanceStatuses.FirstOrDefaultAsync(s => s.Name == "Rejected");
+            if (rejectStatus == null)
+            {
+                return BadRequest("Reject status not found.");
+            }
+
+            // Update status and save changes
+            cashAdvance.CashAdvanceStatusId = rejectStatus.Id;
+            await context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
 
 
         public IActionResult DownloadCoverLetter(string filename)
