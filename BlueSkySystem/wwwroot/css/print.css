@@ -1,0 +1,45 @@
+﻿/* print.css */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 12pt; /* Adjust font size for print */
+    }
+
+    .container {
+        border: none; /* Remove border for print */
+        padding: 0; /* Adjust padding for print */
+        width: 100%; /* Make the container full-width */
+    }
+
+    .header {
+        display: flex;
+        align-items: center; /* Vertically center the items */
+        padding: 10px 20px; /* Adjust padding */
+        margin-top: 0; /* Set top margin to zero */
+        background-color: #f0f8ff;
+    }
+
+    .logo {
+        width: 125px; /* Set the logo width to 2 inches (192 pixels) */
+        height: 125px; /* Set the logo height to 2 inches (192 pixels) */
+        margin-right: 5px; /* Space between logo and text */
+    }
+
+    h1, h2 {
+        margin: 0; /* Remove default margin */
+    }
+
+    .content {
+        display: block; /* Ensure content stacks in a block for print */
+    }
+
+    .field {
+        display: block; /* Stack fields for print */
+        margin-bottom: 5px; /* Add space between fields */
+    }
+
+        .field label {
+            font-weight: bold;
+        }
+}

@@ -20,3 +20,45 @@ html {
 body {
     margin-bottom: 60px;
 }
+
+/* Table with rounded corners and no inner borders */
+table.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid black; /* Thinner outer border */
+    border-radius: 15px; /* Rounded corners */
+}
+
+table.table th {
+    background-color: #f0f0f0; /* Light gray header */
+    padding: 8px;
+    text-align: left;
+}
+
+table.table td {
+    padding: 8px;
+    text-align: left;
+}
+
+/* Apply rounded corners to specific cells */
+table.table thead th:first-child {
+    border-top-left-radius: 15px;
+}
+
+table.table thead th:last-child {
+    border-top-right-radius: 15px;
+}
+
+table.table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 15px;
+}
+
+table.table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 15px;
+}
+
+/* Remove borders between table cells */
+table.table th, table.table td {
+    border: none; /* No inner borders */
+}

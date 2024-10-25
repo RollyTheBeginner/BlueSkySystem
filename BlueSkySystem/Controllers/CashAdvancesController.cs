@@ -66,7 +66,6 @@ namespace BlueSkySystem.Controllers
             return View(cashadvances);
         }
 
-
         // GET: CashAdvance/Details
 
         public async Task<IActionResult> Details(int? id)
@@ -423,6 +422,20 @@ namespace BlueSkySystem.Controllers
             }
 
             return File(fileBytes, contentType, filename);
+        }
+
+
+        // Print Details
+        [Authorize(Roles = "Admin, Department Head")]
+        public async Task<IActionResult> PrintDetails(int id)
+        {
+            var cashadvances = context.CashAdvances
+                           .Include(ca => ca.CashAdvanceStatus) // Include related status
+                           .Where(ca => ca.CashAdvanceStatus.Name == "Approved") // Filter by approved status
+                           .OrderByDescending(ca => ca.Id)
+                           .ToList();
+
+            return View(cashadvances);
         }
 
     }

@@ -1,110 +1,258 @@
 ﻿@model List<CashAdvance>
+@using BlueSkySystem.Helpers
+@{
+    <link rel="stylesheet" href="~/css/print.css" media="print" />
+}
 
 <h1>Cash Advance Overview</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Advance Form</title>
+</head>
 
-<div class="row mb-5">
-    <div class="col">
-        <p>
-            <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create">Apply Cash Advance</a>
-        </p>
+<body>
+
+    <div class="row mb-5">
+        <div class="col">
+            <p>
+                <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create">Apply Cash Advance</a>
+            </p>
+        </div>
+        <div class="col"></div>
     </div>
-    <div class="col"></div>
-</div>
 
-<table class="table table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th>No.</th>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Purpose</th>
-            <th>Amount</th>
-            <th>E-signature</th>
-            <th>Cover Letter</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
+    <select id="cashAdvanceSelector" onchange="selectCashAdvance()">
+        <option value="">-- Select Voucher No. --</option>
         @foreach (var cashadvances in Model)
         {
+            <option value="@cashadvances.Id">@cashadvances.Id</option>
+        }
+    </select>
+
+    <button id="printButton" onclick="printForm(document.getElementById('cashAdvanceSelector').value)" disabled>Print</button>
+
+    <div id="printable-area">
+        @foreach (var cashadvances in Model)
+        {
+            <div class="container cash-advance-container" data-id="@cashadvances.Id" style="display:none;">
+                <div class="header">
+                    <img src="/images/logo.jpg" alt="Company Logo" class="logo" />
+                    <div class="header-text">
+                        <h1 style="text-align: center;">BLUE SKY TRADING INC., CO.</h1>
+                        <h2 style="text-align: center;">CASH ADVANCE FORM</h2>
+                    </div>
+                </div>
+
+                <table border="1" style="border-collapse: collapse; border: 1px solid black; width: 100%; height: auto;">
+                    <tr>
+                        <td colspan="2" style="padding: 5px;"><strong>Requested by: </strong>@cashadvances.FullName</td>
+                        <td colspan="2" style="padding: 5px;"><strong>Date Submitted: </strong>@cashadvances.DateSubmitted.ToString("MM/dd/yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;"><strong>Department: </strong>@cashadvances.Department</td>
+                        <td colspan="2" style="padding: 5px;"><strong>Date Required: </strong>@cashadvances.DateRequired.ToString("MM/dd/yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px; height: 100px; vertical-align: top;">
+                            <!-- Set vertical-align to top -->
+                            <div style="margin-bottom: 10px;">
+                                <!-- Space between the title and the purpose -->
+                                <strong>Expenses Request Purpose/Description:</strong>
+                            </div>
+                            <div style="text-align: center; line-height: 80px;">
+                                <!-- Center the purpose text -->
+                                @cashadvances.Purpose
+                            </div>
+                        </td>
+                        <td colspan="2" style="padding: 5px; height: 100px; vertical-align: top;">
+                            <div style="margin-bottom: 10px;">
+                                <strong>Amount: </strong>
+                            </div>
+                            <div style="text-align: center; line-height: 80px;">
+                                ₱@(cashadvances.Amount.ToString("N2"))
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4" style="padding: 5px;">
+                            <strong>Amount in Words: </strong>@NumberToWordsConverter.ConvertToWords(Convert.ToDecimal(cashadvances.Amount))
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding: 5px;">
+                            <strong>If this amount is not settled within fifteen (15) days, this will be automatically deducted from your payroll.</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top; padding: 5px;">
+                            <strong>
+                                Requested by:
+                            </strong>
+                            <br />
+                            <span><img src="~/ESignature/@cashadvances.ImageFileName1" alt="Image" style="width: 100px;" /></span><br />
+                            @cashadvances.FullName
+                        </td>
+                        <td style="text-align: center; vertical-align: top; padding: 5px;">
+                            <strong>
+                                Recommending Approval:
+                            </strong>
+                            <br />
+                            <span><img src="~/ESignature/@cashadvances.ImageFileName1" alt="Image" style="width: 100px;" /></span><br />
+                            @cashadvances.RecommendingApprovalId
+                        </td>
+                        <td style="text-align: center; vertical-align: top; padding: 5px;">
+                            <strong>
+                                Approved by:
+                            </strong>
+                            <br />  <span><img src="~/ESignature/@cashadvances.ImageFileName1" alt="Image" style="width: 100px;" /></span><br />
+                            @cashadvances.ApprovedById
+                        </td>
+                        <td style="text-align: center; vertical-align: top; padding: 5px;">
+                            <strong>
+                                Amount Received by:
+                            </strong>
+                            <br /><br />
+                            @cashadvances.AmountReceivedby<br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding: 5px;"><strong>Remarks:</strong></td>
+                    </tr>
+                </table>
+
+
+
+            </div>
+        }
+    </div>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>@cashadvances.Id</td>
-                <td>@cashadvances.FullName</td>
-                <td>@cashadvances.Department</td>
-                <td>@cashadvances.Purpose</td>
-                <td>₱@(cashadvances.Amount.ToString("N2"))</td>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Purpose</th>
+                <th>Amount</th>
+                <th>E-signature</th>
+                <th>Cover Letter</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cashadvances in Model)
+            {
+                <tr>
+                    <td>@cashadvances.Id</td>
+                    <td>@cashadvances.FullName</td>
+                    <td>@cashadvances.Department</td>
+                    <td>@cashadvances.Purpose</td>
+                    <td>₱@(cashadvances.Amount.ToString("N2"))</td>
 
-                <!-- E-signature column -->
-                <td>
-                    @if (!string.IsNullOrEmpty(cashadvances.ImageFileName1))
-                    {
-                        <img src="/ESignature/@cashadvances.ImageFileName1" width="100" alt="E-signature for @cashadvances.FullName" />
-                    }
-                    else
-                    {
-                        <span>No signature available</span>
-                    }
-                </td>
+                    <!-- E-signature column -->
+                    <td>
+                        @if (!string.IsNullOrEmpty(cashadvances.ImageFileName1))
+                        {
+                            <img src="/ESignature/@cashadvances.ImageFileName1" width="100" alt="E-signature for @cashadvances.FullName" />
+                        }
+                        else
+                        {
+                            <span>No signature available</span>
+                        }
+                    </td>
 
-                <!-- Cover Letter column -->
-                <td>
-                    @if (!string.IsNullOrEmpty(cashadvances.CoverLetterName))
-                    {
-                        <a href="@Url.Action("DownloadCoverLetter", "CashAdvances", new { fileName = cashadvances.CoverLetterName })" target="_blank">Download Cover Letter</a>
-                    }
-                    else
-                    {
-                        <span>No cover letter uploaded</span>
-                    }
-                </td>
+                    <!-- Cover Letter column -->
+                    <td>
+                        @if (!string.IsNullOrEmpty(cashadvances.CoverLetterName))
+                        {
+                            <a href="@Url.Action("DownloadCoverLetter", "CashAdvances", new { fileName = cashadvances.CoverLetterName })" target="_blank">Download Cover Letter</a>
+                        }
+                        else
+                        {
+                            <span>No cover letter uploaded</span>
+                        }
+                    </td>
 
-                <!-- Status column -->
-                <td>
-                    @if (cashadvances.CashAdvanceStatus != null)
-                    {
-                        <span class="badge
+                    <!-- Status column -->
+                    <td>
+                        @if (cashadvances.CashAdvanceStatus != null)
+                        {
+                            <span class="badge
                             @(cashadvances.CashAdvanceStatus.Name == "Approved" ? "bg-success" :
                               cashadvances.CashAdvanceStatus.Name == "Rejected" ? "bg-danger" :
                               "bg-secondary")">
-                            @cashadvances.CashAdvanceStatus.Name
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">Pending</span>
-                    }
-                </td>
+                                @cashadvances.CashAdvanceStatus.Name
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Pending</span>
+                        }
+                    </td>
 
-                <!-- Actions dropdown -->
-                <td>
-                    <div class="input-group">
-                        <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-                            Action
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a asp-action="Edit" asp-route-id="@cashadvances.Id" class="dropdown-item"><i class="bi bi-pencil"></i> Edit</a>
-                            </li>
-                            <li>
-                                <a asp-action="Details" asp-route-id="@cashadvances.Id" class="dropdown-item"><i class="bi bi-eye"></i> Details</a>
-                            </li>
-                            <li>
-                                <a asp-action="Delete" asp-route-id="@cashadvances.Id" class="dropdown-item text-danger" onclick="return confirm('Are you sure?')">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success"><i class="bi bi-check"></i> Approve</a>
-                            </li>
-                            <li>
-                                <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning"><i class="bi bi-x-circle"></i> Reject</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
+                    <!-- Actions dropdown -->
+                    <td>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                Action
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a asp-action="Edit" asp-route-id="@cashadvances.Id" class="dropdown-item"><i class="bi bi-pencil"></i> Edit</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Details" asp-route-id="@cashadvances.Id" class="dropdown-item"><i class="bi bi-eye"></i> Details</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Delete" asp-route-id="@cashadvances.Id" class="dropdown-item text-danger" onclick="return confirm('Are you sure?')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success"><i class="bi bi-check"></i> Approve</a>
+                                </li>
+                                <li>
+                                    <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning"><i class="bi bi-x-circle"></i> Reject</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
 
-            </tr>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script>
+        function selectCashAdvance() {
+            var selectedId = document.getElementById('cashAdvanceSelector').value;
+            document.getElementById('printButton').disabled = selectedId === '';
+
+            // Show or hide cash advance details based on selection
+            var containers = document.querySelectorAll('.cash-advance-container');
+            containers.forEach(container => {
+                container.style.display = (container.getAttribute('data-id') === selectedId) ? 'block' : 'none';
+            });
         }
-    </tbody>
-</table>
+
+        function printForm(selectedId) {
+            var containerToPrint = document.querySelector(`.cash-advance-container[data-id='${selectedId}']`);
+            if (containerToPrint) {
+                var originalContents = document.body.innerHTML;
+                document.body.innerHTML = containerToPrint.innerHTML;
+                window.print();
+                document.body.innerHTML = originalContents;
+                selectCashAdvance(); // Reset to show/hide containers again
+            }
+        }
+    </script>
+
+    <script src="~/js/print.js" asp-append-version="true"></script>
+
+</body>
+</html>

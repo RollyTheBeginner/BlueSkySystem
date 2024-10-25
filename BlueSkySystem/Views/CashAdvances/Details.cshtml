@@ -8,6 +8,11 @@
         <h2 class="text-center mb-5">Details</h2>
 
         <dl class="row mb-0">
+            <dt class="col-sm-4 col-form-label">Voucher No.</dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(m => m.Id)
+            </dd>
+
             <dt class="col-sm-4 col-form-label">First Name:</dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(m => m.FirstName)
@@ -106,9 +111,6 @@
             <dd class="col-sm-8">
                 @Html.DisplayFor(m => m.ModifiedOn)
             </dd>
-
-
-
         </dl>
 
         <div class="row mt-4">
@@ -119,5 +121,6 @@
                 <a class="btn btn-outline-primary" asp-controller="CashAdvances" asp-action="Index" role="button">Back to List</a>
             </div>
         </div>
+
     </div>
 </div>

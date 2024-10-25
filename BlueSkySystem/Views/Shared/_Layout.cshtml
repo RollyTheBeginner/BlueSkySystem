@@ -10,59 +10,57 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BlueSkySystem.styles.css" asp-append-version="true" />
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BlueSkySystem</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BlueSkySystem</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+
+                    @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Department Head")))
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Employee List</a>
                         </li>
 
-                        @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Department Head")))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Employee List</a>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link text-dark dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Cash Advance
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="Index">Cash Advance List</a></li>
-                                    <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="PendingList">Waiting for Approval</a></li>
-                                    <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="ApprovedList">Approved List</a></li>
-                                    <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="RejectedList">Rejected List</a></li>
-                                </ul>
-                            </li>
-                        }
-                        <!-- Dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Forms
+                                Cash Advance
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="Create">Cash Advance</a></li>
-                                <li><a class="dropdown-item" href="#">Salary Loan</a></li>
+                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="Index">Cash Advance List</a></li>
+                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="PendingList">Waiting for Approval</a></li>
+                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="ApprovedList">Approved List</a></li>
+                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="RejectedList">Rejected List</a></li>
+                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="PrintDetails">Print List</a></li>
                             </ul>
                         </li>
-                        <partial name="_LoginPartial" />
-                    </ul>
-                </div>
+                    }
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Forms
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="Create">Cash Advance</a></li>
+                            <li><a class="dropdown-item" href="#">Salary Loan</a></li>
+                        </ul>
+                    </li>
+                    <partial name="_LoginPartial" />
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
     <div class="container">
         <main role="main" class="pb-3">
