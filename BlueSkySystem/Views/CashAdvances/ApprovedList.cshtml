@@ -24,16 +24,6 @@
         <div class="col"></div>
     </div>
 
-    <select id="cashAdvanceSelector" onchange="selectCashAdvance()">
-        <option value="">-- Select Voucher No. --</option>
-        @foreach (var cashadvances in Model)
-        {
-            <option value="@cashadvances.Id">@cashadvances.Id</option>
-        }
-    </select>
-
-    <button id="printButton" onclick="printForm(document.getElementById('cashAdvanceSelector').value)" disabled>Print</button>
-
     <div id="printable-area">
         @foreach (var cashadvances in Model)
         {
@@ -56,7 +46,7 @@
                         <td colspan="2" style="padding: 5px;"><strong>Date Required: </strong>@cashadvances.DateRequired.ToString("MM/dd/yyyy")</td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="padding: 5px; height: 100px; vertical-align: top;">
+                        <td colspan="2" style="padding: 5px; height: 150px; width: 250px; vertical-align: top;">
                             <!-- Set vertical-align to top -->
                             <div style="margin-bottom: 10px;">
                                 <!-- Space between the title and the purpose -->
@@ -67,7 +57,7 @@
                                 @cashadvances.Purpose
                             </div>
                         </td>
-                        <td colspan="2" style="padding: 5px; height: 100px; vertical-align: top;">
+                        <td colspan="2" style="padding: 5px; height: 150px; width: 50px; vertical-align: top;">
                             <div style="margin-bottom: 10px;">
                                 <strong>Amount: </strong>
                             </div>
@@ -87,44 +77,67 @@
                             <strong>If this amount is not settled within fifteen (15) days, this will be automatically deducted from your payroll.</strong>
                         </td>
                     </tr>
+
                     <tr>
-                        <td style="text-align: center; vertical-align: top; padding: 5px;">
-                            <strong>
-                                Requested by:
-                            </strong>
-                            <br />
-                            <span><img src="~/ESignature/@cashadvances.ImageFileName1" alt="Image" style="width: 100px;" /></span><br />
-                            @cashadvances.FullName
+                        <!-- This cell contains Requested by: -->
+                        <td style="text-align: center; padding: 5px; vertical-align: top;">
+                            <!-- Set vertical-align to top -->
+                            <strong>Requested by:</strong>
+
+                            <div>
+                                <!-- E-Signature of requester -->
+                                <span>
+                                    <img src="~/ESignature/@cashadvances.ImageFileName1" alt="Requester's Signature" style="width: 100px;" />
+                                </span>
+                            </div>
+                            <!-- bottom the purpose text -->
+                            <div style="text-align: center;">
+                                @cashadvances.FullName
+                            </div>
                         </td>
-                        <td style="text-align: center; vertical-align: top; padding: 5px;">
-                            <strong>
-                                Recommending Approval:
-                            </strong>
-                            <br />
-                            <span><img src="~/ESignature/@cashadvances.ImageFileName1" alt="Image" style="width: 100px;" /></span><br />
-                            @cashadvances.RecommendingApprovalId
+
+                        <!-- This cell contains Recommending Approval -->
+                        <td style="text-align: center; padding: 5px; vertical-align: top;">
+                            <strong>Recommending Approval:</strong>
+
+                            <!-- E-Signature of Recommending Approval -->
+                            <div style="text-align: center;">
+                                <img src="~/ApproversESignature/Sample.png" alt="Recommender's Signature" style="width: 100px;" />
+                            </div>
+
+                            <!-- bottom the purpose text -->
+                            <div style="text-align: center;">
+                                @cashadvances.RecommendingApprovalId
+                            </div>
                         </td>
-                        <td style="text-align: center; vertical-align: top; padding: 5px;">
-                            <strong>
-                                Approved by:
-                            </strong>
-                            <br />  <span><img src="~/ESignature/@cashadvances.ImageFileName1" alt="Image" style="width: 100px;" /></span><br />
-                            @cashadvances.ApprovedById
+
+                        <!-- This cell contains Approved by: -->
+                        <td style="text-align: center; padding: 5px; vertical-align: top;">
+                            <strong>Approved by:</strong>
+
+                            <!-- E-Signature of Recommending Approval -->
+
+                            <div style="text-align: center;">
+                                @cashadvances.ApprovedById
+                            </div>
                         </td>
-                        <td style="text-align: center; vertical-align: top; padding: 5px;">
-                            <strong>
-                                Amount Received by:
-                            </strong>
-                            <br /><br />
-                            @cashadvances.AmountReceivedby<br />
+
+                        <!-- This cell contains Amount Received by: -->
+                        <td style="text-align: center; padding: 5px;  vertical-align: top;">
+                            <!-- Set vertical-align to top -->
+                            <strong>Amount Received by:</strong>
+
+                            <div style="text-align: center; line-height: 80px;">
+                                <!-- Center the purpose text -->
+                                @cashadvances.AmountReceivedby
+                            </div>
                         </td>
                     </tr>
+
                     <tr>
                         <td colspan="4" style="padding: 5px;"><strong>Remarks:</strong></td>
                     </tr>
                 </table>
-
-
 
             </div>
         }
@@ -142,6 +155,7 @@
                 <th>Cover Letter</th>
                 <th>Status</th>
                 <th>Actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -203,21 +217,35 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a asp-action="Edit" asp-route-id="@cashadvances.Id" class="dropdown-item"><i class="bi bi-pencil"></i> Edit</a>
+                                    <a asp-action="Edit" asp-route-id="@cashadvances.Id" class="dropdown-item text-primary">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
                                 </li>
                                 <li>
-                                    <a asp-action="Details" asp-route-id="@cashadvances.Id" class="dropdown-item"><i class="bi bi-eye"></i> Details</a>
+                                    <a asp-action="Details" asp-route-id="@cashadvances.Id" class="dropdown-item">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
                                 </li>
                                 <li>
-                                    <a asp-action="Delete" asp-route-id="@cashadvances.Id" class="dropdown-item text-danger" onclick="return confirm('Are you sure?')">
+                                    <a asp-action="Delete" asp-route-id="@cashadvances.Id" class="dropdown-item text-danger"
+                                       onclick="return confirm('Are you sure?')">
                                         <i class="bi bi-trash"></i> Delete
                                     </a>
                                 </li>
                                 <li>
-                                    <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success"><i class="bi bi-check"></i> Approve</a>
+                                    <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success">
+                                        <i class="bi bi-check"></i> Approve
+                                    </a>
                                 </li>
                                 <li>
-                                    <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning"><i class="bi bi-x-circle"></i> Reject</a>
+                                    <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning">
+                                        <i class="bi bi-x-circle"></i> Reject
+                                    </a>
+                                </li>
+                                <li>
+                                    <button id="printButton" class="dropdown-item" onclick="printForm('@cashadvances.Id')">
+                                        <i class="bi bi-printer"></i> Print
+                                    </button>
                                 </li>
                             </ul>
                         </div>

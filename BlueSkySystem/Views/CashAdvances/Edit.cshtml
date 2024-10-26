@@ -77,26 +77,45 @@
             </div>
 
             <div class="row mb-3">
-                <div class="offset-sm-4 col-sm-8">
-                    <img src="/ESignature/@ViewData["ImageFileName1"]" width="150" />
+                <label class="col-sm-4 col-form-label">Electronic Signature (Requester)</label>
+                <div class="col-sm-8">
+                    <img src="/ESignature/@ViewData["ImageFileName1"]" width="150" alt="Electronic Signature" />
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Electronic Signature (Requester)</label>
+                <label class="col-sm-4 col-form-label">Upload New Signature</label>
                 <div class="col-sm-8">
-                    <input class="form-control" asp-for="ImageFile1">
+                    <input type="file" class="form-control" asp-for="ImageFile1" accept="image/*" />
                     <span asp-validation-for="ImageFile1" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Cover Letter</label>
+                <label class="col-sm-4 col-form-label">Upload New Cover Letter</label>
                 <div class="col-sm-8">
                     <input class="form-control" asp-for="CoverLetter">
                     <span asp-validation-for="CoverLetter" class="text-danger"></span>
                 </div>
             </div>
+
+            <div class="row mb-3">
+                <div class="offset-sm-4 col-sm-8">
+                    <img src="/ESignature/@ViewData["RecommendingApprovalId"]" width="150" />
+                </div>
+            </div>
+
+            @if (signInManager.IsSignedIn(User) && (User.IsInRole("Department Head")))
+            {
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Electronic Signature (Approved By)</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" asp-for="ImageFile3">
+                        <span asp-validation-for="ImageFile3" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+
 
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Amount Received by:</label>
@@ -109,31 +128,6 @@
                     </select>
                 </div>
             </div>
-
-            <!----------------
-             (signInManager.IsSignedIn(User) && (User.IsInRole("Department Head")))
-            {
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Electronic Signature (Recommending Approval)</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" asp-for="ImageFile2">
-                        <span asp-validation-for="ImageFile2" class="text-danger"></span>
-                    </div>
-                </div>
-            }
-
-
-             (signInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
-            {
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Electronic Signature (Approved By)</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" asp-for="ImageFile3">
-                        <span asp-validation-for="ImageFile3" class="text-danger"></span>
-                    </div>
-                </div>
-            }
-            ------------->
 
             <div class="row">
                 <div class="offset-sm-4 col-sm-4 d-grid">

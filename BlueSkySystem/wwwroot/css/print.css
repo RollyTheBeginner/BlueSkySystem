@@ -21,25 +21,29 @@
     }
 
     .logo {
-        width: 125px; /* Set the logo width to 2 inches (192 pixels) */
-        height: 125px; /* Set the logo height to 2 inches (192 pixels) */
+        width: 125px; /* Set the logo width */
+        height: 125px; /* Set the logo height */
         margin-right: 5px; /* Space between logo and text */
     }
 
-    h1, h2 {
-        margin: 0; /* Remove default margin */
+    /* Styles for the table */
+    table {
+        width: 100%; /* Full width for tables in print */
+        border-collapse: collapse; /* Remove space between borders */
     }
 
-    .content {
-        display: block; /* Ensure content stacks in a block for print */
+    td {
+        text-align: left; /* Center text in cells */
+        padding: 5px; /* Padding for cells */
+        vertical-align: top; /* Align content to the top */
     }
 
-    .field {
-        display: block; /* Stack fields for print */
-        margin-bottom: 5px; /* Add space between fields */
+    .signature-image {
+        width: 100px; /* Set image width */
     }
 
-        .field label {
-            font-weight: bold;
-        }
+    .name-text {
+        line-height: 80px; /* Adjust line height for text */
+    }
+
 }

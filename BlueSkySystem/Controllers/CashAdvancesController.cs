@@ -31,14 +31,17 @@ namespace BlueSkySystem.Controllers
             return View(cashadvances);
         }
 
-        [Authorize(Roles = "Admin, Department Head")]
-        public IActionResult PendingList()
+
+
+
+        public IActionResult PendingListView()
         {
             var cashadvances = context.CashAdvances
-                .Include(ca => ca.CashAdvanceStatus) // Include related status
-                .Where(ca => ca.CashAdvanceStatus.Name == "Pending Status") // Filter by pending status
+                .Include(ca => ca.CashAdvanceStatus)
+                .Where(ca => ca.CashAdvanceStatus.Name == "Pending Status")
                 .OrderByDescending(ca => ca.Id)
                 .ToList();
+
             return View(cashadvances);
         }
 
@@ -204,13 +207,18 @@ namespace BlueSkySystem.Controllers
                 Purpose = cashadvances.Purpose,
                 Amount = cashadvances.Amount,
                 AmountReceivedby = cashadvances.AmountReceivedby,
+
             };
 
             ViewData["CreatedById"] = cashadvances.CreatedById;
             ViewData["CreatedOn"] = cashadvances.CreatedOn;
             ViewData["CashAdvanceId"] = cashadvances.Id;
             ViewData["ImageFileName1"] = cashadvances.ImageFileName1;
+            ViewData["ImageFileName2"] = cashadvances.ImageFileName2;
+            ViewData["ImageFileName3"] = cashadvances.ImageFileName3;
             ViewData["CoverLetterName"] = cashadvances.CoverLetterName;
+            ViewData["RecommendingApprovalId"] = cashadvances.RecommendingApprovalId;
+            ViewData["ApprovedById"] = cashadvances.ApprovedById;
 
             return View(cashadvancesDto);
         }
@@ -231,7 +239,11 @@ namespace BlueSkySystem.Controllers
                 ViewData["ModifiedOn"] = cashadvances.ModifiedOn;
                 ViewData["CashAdvanceId"] = cashadvances.Id;
                 ViewData["ImageFileName1"] = cashadvances.ImageFileName1;
+                ViewData["ImageFileName2"] = cashadvances.ImageFileName2;
+                ViewData["ImageFileName3"] = cashadvances.ImageFileName3;
                 ViewData["CoverLetterName"] = cashadvances.CoverLetterName;
+                ViewData["RecommendingApprovalId"] = cashadvances.RecommendingApprovalId;
+                ViewData["ApprovedById"] = cashadvances.ApprovedById;
 
                 return View(cashadvanceDto);
             }
@@ -248,7 +260,14 @@ namespace BlueSkySystem.Controllers
                 return NotFound("User not found");
             }
 
+            // Save the image file with a unique name
+            string newFileName2 = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.ImageFile2.FileName);
+            string imageFullPath2 = Path.Combine(environment.WebRootPath, "ApproversESignature", newFileName2);
 
+            using (var stream = System.IO.File.Create(imageFullPath2))
+            {
+                cashadvanceDto.ImageFile2.CopyTo(stream);
+            }
 
             //update the image file if we have a new image file
             string newFileName = cashadvances.ImageFileName1;
@@ -267,6 +286,7 @@ namespace BlueSkySystem.Controllers
                 string oldImageFullPath = environment.WebRootPath + "/ESignature/" + cashadvances.ImageFileName1;
                 System.IO.File.Delete(oldImageFullPath);
             }
+
 
             // update the cover letter file if we have a new cover letter file
             string coverLetterOriginalFileName = cashadvances.CoverLetterName;
@@ -291,7 +311,6 @@ namespace BlueSkySystem.Controllers
 
 
             //update the product in the database
-            //Kulang pa ng Cover letter
             cashadvances.FirstName = cashadvanceDto.FirstName;
             cashadvances.MiddleName = cashadvanceDto.MiddleName;
             cashadvances.LastName = cashadvanceDto.LastName;
@@ -305,6 +324,8 @@ namespace BlueSkySystem.Controllers
             cashadvances.ModifiedById = currentUser.FullName;
             cashadvances.ModifiedOn = DateTime.Now;
             cashadvances.AmountReceivedby = cashadvanceDto.AmountReceivedby;
+            cashadvances.ImageFileName2 = newFileName2;
+           // cashadvances.ImageFileName3 = newFileName3;
 
             context.SaveChanges();
 
@@ -328,6 +349,33 @@ namespace BlueSkySystem.Controllers
 
         }
 
+        public async Task<IActionResult> PendingStatusCashAdvance(int id)
+        {
+            var cashAdvance = await context.CashAdvances.FindAsync(id);
+            if (cashAdvance == null)
+            {
+                return NotFound();
+            }
+
+            // Get the current logged-in user's ID and name
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await context.Users.FindAsync(userId);
+
+            // Check if the user exists
+            if (currentUser == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var approvedStatus = await context.CashAdvanceStatuses.FirstOrDefaultAsync(s => s.Name == "Pending Status");
+            if (approvedStatus != null)
+            {
+                cashAdvance.CashAdvanceStatusId = approvedStatus.Id;
+                await context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "CashAdvances");
+        }
 
         public async Task<IActionResult> ApproveCashAdvance(int id)
         {
@@ -337,16 +385,30 @@ namespace BlueSkySystem.Controllers
                 return NotFound();
             }
 
+            // Get the current logged-in user's ID and name
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await context.Users.FindAsync(userId);
+
+            // Check if the user exists
+            if (currentUser == null)
+            {
+                return NotFound("User not found.");
+            }
+
             var approvedStatus = await context.CashAdvanceStatuses.FirstOrDefaultAsync(s => s.Name == "Approved");
             if (approvedStatus != null)
             {
                 cashAdvance.CashAdvanceStatusId = approvedStatus.Id;
+                cashAdvance.RecommendingApprovalId = currentUser.FullName;
+                cashAdvance.RecommendingApproveOn = DateTime.UtcNow;
+
+                // Set the e-signature file name
+                cashAdvance.ImageFileName2 = Path.Combine("ApproversESignature", $"Sample.png"); // Adjust extension if different
                 await context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "CashAdvances");
         }
-
 
         public async Task<IActionResult> RejectCashAdvance(int id)
         {
@@ -355,6 +417,16 @@ namespace BlueSkySystem.Controllers
             if (cashAdvance == null)
             {
                 return NotFound();
+            }
+
+            // Get the current logged-in user's ID and name
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await context.Users.FindAsync(userId);
+
+            // Check if the user exists
+            if (currentUser == null)
+            {
+                return NotFound("User not found.");
             }
 
             // Await for the async call and check for null correctly
@@ -366,9 +438,12 @@ namespace BlueSkySystem.Controllers
 
             // Update status and save changes
             cashAdvance.CashAdvanceStatusId = rejectStatus.Id;
+
+            cashAdvance.RejectedById = currentUser.FullName;
+            cashAdvance.RejectedOn = DateTime.UtcNow;
             await context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "CashAdvances");
         }
 
 
@@ -429,13 +504,18 @@ namespace BlueSkySystem.Controllers
         [Authorize(Roles = "Admin, Department Head")]
         public async Task<IActionResult> PrintDetails(int id)
         {
-            var cashadvances = context.CashAdvances
-                           .Include(ca => ca.CashAdvanceStatus) // Include related status
-                           .Where(ca => ca.CashAdvanceStatus.Name == "Approved") // Filter by approved status
-                           .OrderByDescending(ca => ca.Id)
-                           .ToList();
+            // Fetch the specific CashAdvance by id and include related status
+            var cashadvance = await context.CashAdvances
+                                   .Include(ca => ca.CashAdvanceStatus) // Include related status
+                                   .FirstOrDefaultAsync(ca => ca.Id == id && ca.CashAdvanceStatus.Name == "Approved"); // Filter by id and approved status
 
-            return View(cashadvances);
+            // Check if the cashadvance is null
+            if (cashadvance == null)
+            {
+                return NotFound(); // Return a NotFound result if not found
+            }
+
+            return View(cashadvance); // Return the single cashadvance object to the view
         }
 
     }

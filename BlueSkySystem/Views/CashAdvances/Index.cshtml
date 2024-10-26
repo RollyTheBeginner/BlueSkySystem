@@ -55,7 +55,7 @@
                 <td>
                     @if (!string.IsNullOrEmpty(cashadvances.CoverLetterName))
                     {
-                        <a href="@Url.Action("DownloadCoverLetter", "CashAdvances", new { fileName = cashadvances.CoverLetterName })" target="_blank">Download Cover Letter</a>
+                        <a href="@Url.Action("DownloadCoverLetter", "CashAdvances", new { fileName = cashadvances.CoverLetterName })" target="_blank">Download</a>
                     }
                     else
                     {
@@ -104,15 +104,24 @@
                                 </a>
                             </li>
                             <li>
-                                <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success"><i class="bi bi-check"></i> Approve</a>
+                                <a asp-action="PendingStatusCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-secondary">
+                                    <i class="bi bi-hourglass"></i> Pending
+                                </a>
                             </li>
                             <li>
-                                <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning"><i class="bi bi-x-circle"></i> Reject</a>
+                                <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success">
+                                    <i class="bi bi-check"></i> Approve
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning">
+                                    <i class="bi bi-x-circle"></i> Reject
+                                </a>
                             </li>
                         </ul>
+
                     </div>
                 </td>
-
             </tr>
         }
     </tbody>

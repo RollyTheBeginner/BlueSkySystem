@@ -48,6 +48,7 @@ namespace BlueSkySystem.Models
 
         [Display(Name = "Amount Received by:")]
         public string? AmountReceivedby { get; set; }
+
     }
 
 }

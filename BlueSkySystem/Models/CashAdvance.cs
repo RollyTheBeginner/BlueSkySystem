@@ -55,21 +55,19 @@ namespace BlueSkySystem.Models
         [Display(Name = "Amount Received by:")]
         public string? AmountReceivedby { get; set; }
 
-    
+
         public int? CashAdvanceStatusId { get; set; }
 
         public CashAdvanceStatus? CashAdvanceStatus { get; set; }
-     
-        
-
-        /*
-[Display(Name = "Electronic Signature (Recommending Approval)")]
-public string ImageFileName2 { get; set; }
 
 
-[Display(Name = "Electronic Signature (Approved by:)")]
-public string ImageFileName3 { get; set; }
+        [Display(Name = "Electronic Signature (Recommending Approval)")]
+        public string? ImageFileName2 { get; set; }
 
-*/
+
+        [Display(Name = "Electronic Signature (Approved by:)")]
+        public string? ImageFileName3 { get; set; }
+
+
     }
 }

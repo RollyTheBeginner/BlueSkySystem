@@ -4,6 +4,7 @@ using BlueSkySystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlueSkySystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241026015800_CashAdvanceUpdate1")]
+    partial class CashAdvanceUpdate1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,12 +72,6 @@ namespace BlueSkySystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageFileName1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageFileName2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageFileName3")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")

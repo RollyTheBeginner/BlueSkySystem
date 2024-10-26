@@ -54,8 +54,15 @@ namespace BlueSkySystem.Models
         public int? CashAdvanceStatusId { get; set; }
 
         public CashAdvanceStatus? CashAdvanceStatus { get; set; }
-        
-        
+
+        //Signature of Approver
+
+        [Display(Name = "Electronic Signature (Recommending Approval)")]
+        public IFormFile? ImageFile2 { get; set; }
+
+        [Display(Name = "Electronic Signature (Approved by)")]
+        public IFormFile? ImageFile3 { get; set; }
+
 
         /*
         [Display(Name = "Electronic Signature (Recommending Approval)")]
