@@ -1,64 +1,52 @@
-html {
-    font-size: 14px;
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-    position: relative;
-    min-height: 100%;
+/* Universal styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
 body {
-    margin-bottom: 60px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    width: 1640px;
+    top: 16px;
+    min-height: calc(100vh - 32px);
+    max-height: max-content;
+    left: 265px;
+    position: relative;
+    border-radius: 16px;
 }
 
-/* Table with rounded corners and no inner borders */
-table.table {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid black; /* Thinner outer border */
-    border-radius: 15px; /* Rounded corners */
+/* Main Content Wrapper */
+.content-wrapper {
+    display: inherit;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-left: 275px; /* Adjust based on sidebar width */
 }
 
-table.table th {
-    background-color: #f0f0f0; /* Light gray header */
-    padding: 8px;
-    text-align: left;
+.main-content {
+    max-width: 1640px;
+    text-align: center;
+    padding: 20px;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-table.table td {
-    padding: 8px;
-    text-align: left;
+
+/* Style for the container */
+.container {
+    max-width: inherit; /* Adjust the maximum width */
+    margin: auto; /* Center the container */
+    padding: 4px; /* Add padding */
 }
 
-/* Apply rounded corners to specific cells */
-table.table thead th:first-child {
-    border-top-left-radius: 15px;
-}
-
-table.table thead th:last-child {
-    border-top-right-radius: 15px;
-}
-
-table.table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 15px;
-}
-
-table.table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 15px;
-}
-
-/* Remove borders between table cells */
-table.table th, table.table td {
-    border: none; /* No inner borders */
+/* Navbar styling */
+.navbar {
+    background-color: #007bff; /* Set background color */
+    border-radius: 8px;
 }

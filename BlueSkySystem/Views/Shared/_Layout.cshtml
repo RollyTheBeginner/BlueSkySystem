@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity;
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<Users> signInManager
 
 <!DOCTYPE html>
@@ -7,74 +7,151 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BlueSkySystem</title>
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BlueSkySystem.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=chevron_left" />
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BlueSkySystem</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
+    <aside class="sidebar">
+        <header class="sidebar-header">
+            <a class="header-logo navbar-brand text-dark" asp-controller="Home" asp-action="Index">
+                <span class="nav-label">
+                    <img src="~/images/BlueSkyLogo.png" alt="BlueSky Logo">
+                </span>
+            </a>
+            <button class="toggler sidebar-toggler" type="button" aria-label="Toggle sidebar">☰</button>
+        </header>
+
+        <nav class="sidebar-nav">
+            <!-- Primary top nav -->
+            <ul class="nav-list primary-nav">
+                @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Department Head")))
+                {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-
-                    @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Department Head")))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Employee List</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Cash Advance
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="Index">Cash Advance List</a></li>
-                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="PendingListView">Awaiting approval</a></li>
-                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="ApprovedList">Approved List</a></li>
-                                <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="RejectedList">Rejected List</a></li>
-                            </ul>
-                        </li>
-                    }
-                    <!-- Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-dark dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Forms
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="Dashboard" asp-action="Dashboard">
+                            <i class="bi bi-grid-fill me-2"></i>
+                            <span class="nav-label">Dashboard</span>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" asp-controller="CashAdvances" asp-action="Create">Cash Advance</a></li>
-                            <li><a class="dropdown-item" href="#">Salary Loan</a></li>
-                        </ul>
+                        <span class="nav-tooltip">Dashboard</span>
                     </li>
-                    <partial name="_LoginPartial" />
-                </ul>
-            </div>
-        </div>
-    </nav>
+                }
+
+                @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Department Head")))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="Employees" asp-action="Index">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span class="nav-label">Employee</span>
+                        </a>
+                        <span class="nav-tooltip">Employee</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="CashAdvances" asp-action="Index">
+                            <i class="bi bi-list"></i>
+                            <span class="nav-label">Overview</span>
+                        </a>
+                        <span class="nav-tooltip">Cash Advance</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="SalaryLoans" asp-action="Index">
+                            <i class="bi bi-list"></i>
+                            <span class="nav-label">Overview</span>
+                        </a>
+                        <span class="nav-tooltip">Salary Loan</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" role="button" data-bs-toggle="collapse" href="#cashAdvanceCollapse" aria-expanded="false" aria-controls="cashAdvanceCollapse">
+                            <i class="bi bi-cash-stack"></i>
+                            <span class="nav-label">List</span>
+                        </a>
+                        <span class="nav-tooltip">CashAdvance List</span>
+                        <div class="collapse" id="cashAdvanceCollapse">
+                            <ul class="list-unstyled ms-3">
+                                @if (User.IsInRole("Department Head"))
+                                {
+                                    <li>
+                                        <a class="nav-link" asp-controller="CashAdvances" asp-action="AwaitingApproval">
+                                            <i class="bi bi-clock"></i> Awaiting List
+                                        </a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li>
+                                        <a class="nav-link" asp-controller="CashAdvances" asp-action="PendingListView">
+                                            <i class="bi bi-hourglass-split"></i> Pending List
+                                        </a>
+                                    </li>
+                                }
+                                <li>
+                                    <a class="nav-link" asp-controller="CashAdvances" asp-action="ApprovedList">
+                                        <i class="bi bi-check-circle"></i> Approved List
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-controller="CashAdvances" asp-action="RejectedList">
+                                        <i class="bi bi-x-circle"></i> Rejected List
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a class="nav-link text-dark" role="button" data-bs-toggle="collapse" href="#cashAdvanceCollapseForms" aria-expanded="false" aria-controls="cashAdvanceCollapseForms">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span class="nav-label">Request Forms</span>
+                    </a>
+                    <div class="collapse" id="cashAdvanceCollapseForms">
+                        <ul class="list-unstyled ms-3">
+                            <li>
+                                <a class="nav-link" asp-controller="CashAdvances" asp-action="Create">
+                                    <i class="bi bi-file-earmark-plus"></i> Cash Advance
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" asp-controller="SalaryLoans" asp-action="Create">
+                                    <i class="bi bi-file-earmark-plus"></i> Salary Loan
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 
     <div class="container">
         <main role="main" class="pb-3">
+            <header>
+                <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                    <partial name="_LoginPartial" />
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - BlueSkySystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/sidebar.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

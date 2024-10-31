@@ -63,16 +63,5 @@ namespace BlueSkySystem.Models
         [Display(Name = "Electronic Signature (Approved by)")]
         public IFormFile? ImageFile3 { get; set; }
 
-
-        /*
-        [Display(Name = "Electronic Signature (Recommending Approval)")]
-        public IFormFile? ImageFile2 { get; set; }
-
-        [Display(Name = "Electronic Signature (Approved by:)")]
-        public IFormFile? ImageFile3 { get; set; }
-
-        [Display(Name = "Amount Received by:")]
-        public string? AmountReceivedby { get; set; }
-        */
     }
 }

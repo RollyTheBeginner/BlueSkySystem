@@ -1,0 +1,146 @@
+﻿@model List<CashAdvance>
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<Users> signInManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Awaiting Approval List</h1>
+<div class="row mb-5">
+    <div class="col">
+        <p>
+            <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create">
+                <i class="bi bi-plus-circle"></i> Apply Cash Advance
+            </a>
+        </p>
+
+    </div>
+    <div class="col"></div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Purpose</th>
+            <th>Amount</th>
+            <th>E-signature</th>
+            <th>Cover Letter</th>
+            <th>Status</th>
+            <th class="text-center">View</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cashadvances in Model)
+        {
+            <tr>
+                <td>@cashadvances.Id</td>
+                <td>@cashadvances.FullName</td>
+                <td>@cashadvances.Department</td>
+                <td>@cashadvances.Purpose</td>
+                <td>₱@(cashadvances.Amount.ToString("N2"))</td>
+
+                <!-- E-signature column -->
+                <td>
+                    @if (!string.IsNullOrEmpty(cashadvances.ImageFileName1))
+                    {
+                        <img src="/ESignature/@cashadvances.ImageFileName1" width="100" alt="E-signature for @cashadvances.FullName" />
+                    }
+                    else
+                    {
+                        <span>No signature available</span>
+                    }
+                </td>
+
+                <!-- Cover Letter column -->
+                <td>
+                    @if (!string.IsNullOrEmpty(cashadvances.CoverLetterName))
+                    {
+                        <a href="@Url.Action("DownloadCoverLetter", "CashAdvances", new { fileName = cashadvances.CoverLetterName })" target="_blank">Download</a>
+                    }
+                    else
+                    {
+                        <span>No cover letter uploaded</span>
+                    }
+                </td>
+
+                <!-- Status column -->
+                <td>
+                    @if (cashadvances.CashAdvanceStatus != null)
+                    {
+                        <span class="badge
+                            @(cashadvances.CashAdvanceStatus.Name == "Approved" ? "bg-success" :
+                              cashadvances.CashAdvanceStatus.Name == "Rejected" ? "bg-danger" :
+                              cashadvances.CashAdvanceStatus.Name == "Awaiting Approval" ? "bg-info" : // New condition for Awaiting Approval
+                              "bg-secondary")">
+                            @cashadvances.CashAdvanceStatus.Name
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary">Pending</span>
+                    }
+                </td>
+
+                <td>
+                    <div class="col">
+                        <p><a class="btn btn-sm" asp-action="Details" asp-route-id="@cashadvances.Id"><i class="bi bi-eye"></i> View</a></p>
+                    </div>
+
+                    <!---  <a asp-action="Details" asp-route-id="cashadvances.Id" class="btn-sm"><i class="bi bi-eye"></i> View</a> -->
+                </td>
+
+                <!-- Actions dropdown -->
+                <td>
+                    <div class="input-group">
+                        <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                            Action
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a asp-action="Edit" asp-route-id="@cashadvances.Id" class="dropdown-item text-primary"><i class="bi bi-pencil"></i> Edit</a>
+                            </li>
+                            <li>
+                                <a asp-action="Delete" asp-route-id="@cashadvances.Id" class="dropdown-item text-danger" onclick="return confirm('Are you sure?')">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </li>
+                            @if (signInManager.IsSignedIn(User) && (User.IsInRole("Department Head")))
+                            {
+                                <li>
+                                    <a asp-action="PendingStatusCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item" style="color: #add8e6;">
+                                        <i class="bi bi-hourglass"></i> Approve
+                                    </a>
+                                </li>
+                            }
+
+                            @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
+                            {
+                                <li>
+                                    <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success">
+                                        <i class="bi bi-check"></i> Approve
+                                    </a>
+                                </li>
+                            }
+                            <li>
+                                <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning">
+                                    <i class="bi bi-x-circle"></i> Reject
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</body>
+</html>

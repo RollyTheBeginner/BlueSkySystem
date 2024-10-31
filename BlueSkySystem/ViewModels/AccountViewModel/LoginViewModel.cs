@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlueSkySystem.ViewModels
-{ 
+namespace BlueSkySystem.ViewModels.AccountViewModel
+{
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Email is required.")]
@@ -12,7 +12,7 @@ namespace BlueSkySystem.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name  = "Remember me?")]
+        [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
 }

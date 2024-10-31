@@ -4,76 +4,90 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <h1>Create</h1>
 
-<h4>Employee</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MiddleName" class="control-label"></label>
-                <input asp-for="MiddleName" class="form-control" />
-                <span asp-validation-for="MiddleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+            <h4>Employee</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="UserId" class="control-label"></label>
+                            <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="control-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MiddleName" class="control-label"></label>
+                            <input asp-for="MiddleName" class="form-control" />
+                            <span asp-validation-for="MiddleName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LastName" class="control-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 col-form-label">Department</label>
+                            <select class="form-select" asp-for="Department">
+                                <option value="IT">IT</option>
+                                <option value="Accountant">Accountant</option>
+                                <option value="Add More">Add More</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-4 col-form-label">Designation</label>
+                            <select class="form-select" asp-for="Designation">
+                                <option value="Software Developer">Software Developer</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Add More">Add More</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Address" class="control-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="BirthDate" class="control-label"></label>
+                            <input asp-for="BirthDate" class="form-control" />
+                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-4 col-form-label">Department</label>
-                    <select class="form-select" asp-for="Department">
-                        <option value="IT">IT</option>
-                        <option value="Accountant">Accountant</option>
-                        <option value="Add More">Add More</option>
-                        <option value="Other">Other</option>
-                    </select>
+            <div>
+                <a asp-action="Index">Back to List</a>
             </div>
+        </div>
 
-
-            <div class="form-group">
-                <label class="col-sm-4 col-form-label">Designation</label>
-                <select class="form-select" asp-for="Designation">
-                    <option value="Software Developer">Software Developer</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Add More">Add More</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        @section Scripts {
+            @{
+                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            }
+        }
+</body>
+</html>

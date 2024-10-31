@@ -31,8 +31,16 @@ namespace BlueSkySystem.Controllers
             return View(cashadvances);
         }
 
+        public IActionResult AwaitingApproval()
+        {
+            var cashadvances = context.CashAdvances
+                .Include (ca => ca.CashAdvanceStatus)
+                .Where(ca => ca.CashAdvanceStatus.Name == "Awaiting Approval")
+                .OrderByDescending (ca => ca.Id)
+                .ToList();
 
-
+            return View(cashadvances);
+        }
 
         public IActionResult PendingListView()
         {
@@ -103,15 +111,15 @@ namespace BlueSkySystem.Controllers
             // Retrieve the current user from the database
             var currentUser = await context.Users.FindAsync(userId);
 
-            var pendingStatus = await context.CashAdvanceStatuses.FirstOrDefaultAsync(x => x.Name == "Pending Status");
+            var awaitingApproval = await context.CashAdvanceStatuses.FirstOrDefaultAsync(x => x.Name == "Awaiting Approval");
 
-            if (pendingStatus != null)
+            if (awaitingApproval != null)
             {
-                cashadvanceDto.CashAdvanceStatusId = pendingStatus.Id;
+                cashadvanceDto.CashAdvanceStatusId = awaitingApproval.Id;
             }
             else
             {
-                ModelState.AddModelError("Status", "Pending status does not exist.");
+                ModelState.AddModelError("Status", "Awaiting Approval does not exist.");
             }
 
             // Check if the user exists
@@ -269,6 +277,15 @@ namespace BlueSkySystem.Controllers
                 cashadvanceDto.ImageFile2.CopyTo(stream);
             }
 
+            // Save the image file with a unique name
+            string newFileName3 = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.ImageFile3.FileName);
+            string imageFullPath3 = Path.Combine(environment.WebRootPath, "ApproversESignature", newFileName3);
+
+            using (var stream3 = System.IO.File.Create(imageFullPath2))
+            {
+                cashadvanceDto.ImageFile2.CopyTo(stream3);
+            }
+
             //update the image file if we have a new image file
             string newFileName = cashadvances.ImageFileName1;
             if (cashadvanceDto.ImageFile1 != null)
@@ -325,7 +342,7 @@ namespace BlueSkySystem.Controllers
             cashadvances.ModifiedOn = DateTime.Now;
             cashadvances.AmountReceivedby = cashadvanceDto.AmountReceivedby;
             cashadvances.ImageFileName2 = newFileName2;
-           // cashadvances.ImageFileName3 = newFileName3;
+            cashadvances.ImageFileName3 = newFileName3;
 
             context.SaveChanges();
 
@@ -349,6 +366,35 @@ namespace BlueSkySystem.Controllers
 
         }
 
+        public async Task<IActionResult> AwaitingApprovalCashAdvance(int id)
+        {
+            var cashAdvance = await context.CashAdvances.FindAsync(id);
+            if (cashAdvance == null)
+            {
+                return NotFound();
+            }
+
+            // Get the current logged-in user's ID and name
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await context.Users.FindAsync(userId);
+
+            //check if the user exists
+            if (currentUser == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var awaitingApproval = await context.CashAdvanceStatuses.FirstOrDefaultAsync(s => s.Name == "Awaiting Approval");
+            if (awaitingApproval != null)
+            {
+                cashAdvance.CashAdvanceStatusId = awaitingApproval.Id;
+
+                await context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "CashAdvances");
+        }
+
         public async Task<IActionResult> PendingStatusCashAdvance(int id)
         {
             var cashAdvance = await context.CashAdvances.FindAsync(id);
@@ -367,10 +413,15 @@ namespace BlueSkySystem.Controllers
                 return NotFound("User not found.");
             }
 
-            var approvedStatus = await context.CashAdvanceStatuses.FirstOrDefaultAsync(s => s.Name == "Pending Status");
-            if (approvedStatus != null)
+            var pendingstatus = await context.CashAdvanceStatuses.FirstOrDefaultAsync(s => s.Name == "Pending Status");
+            if (pendingstatus != null)
             {
-                cashAdvance.CashAdvanceStatusId = approvedStatus.Id;
+                cashAdvance.CashAdvanceStatusId = pendingstatus.Id;
+                cashAdvance.RecommendingApprovalId = currentUser.FullName;
+                cashAdvance.RecommendingApproveOn = DateTime.UtcNow;
+
+                // Set the e-signature file name
+                cashAdvance.ImageFileName2 = Path.Combine("ApproversESignature", $"Sample.png"); // Adjust extension if different
                 await context.SaveChangesAsync();
             }
 
@@ -399,11 +450,11 @@ namespace BlueSkySystem.Controllers
             if (approvedStatus != null)
             {
                 cashAdvance.CashAdvanceStatusId = approvedStatus.Id;
-                cashAdvance.RecommendingApprovalId = currentUser.FullName;
-                cashAdvance.RecommendingApproveOn = DateTime.UtcNow;
+                cashAdvance.ApprovedById = currentUser.FullName;
+                cashAdvance.ApprovedOn = DateTime.UtcNow;
 
                 // Set the e-signature file name
-                cashAdvance.ImageFileName2 = Path.Combine("ApproversESignature", $"Sample.png"); // Adjust extension if different
+                cashAdvance.ImageFileName3 = Path.Combine("ApproversESignature", $"Sample1.png"); // Adjust extension if different
                 await context.SaveChangesAsync();
             }
 

@@ -1,0 +1,104 @@
+﻿@using BlueSkySystem.Models.SalaryLoan
+@model SalaryLoanDto
+@{
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto rounded border p-3">
+                <h2 class="text-center mb-5">Create Form</h2>
+
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">First Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" asp-for="FirstName">
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Middle Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" asp-for="MiddleName">
+                            <span asp-validation-for="MiddleName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Last Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" asp-for="LastName">
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Department</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" asp-for="Department">
+                                <option value="IT">IT</option>
+                                <option value="Accountant">Accountant</option>
+                                <option value="Add More">Add More</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Address</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" asp-for="Address"></textarea>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Amount</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" asp-for="Amount">
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Electronic Signature</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" asp-for="ImageFile1">
+                            <span asp-validation-for="ImageFile1" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Upload Cover Letter</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" asp-for="CoverLetter">
+                            <span asp-validation-for="CoverLetter" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="offset-sm-4 col-sm-4 d-grid">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        <div class="col-sm-4 d-grid">
+                            <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Index" role="button">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

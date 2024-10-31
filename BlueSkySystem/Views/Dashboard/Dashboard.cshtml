@@ -1,0 +1,78 @@
+﻿@using BlueSkySystem.ViewModels
+@using BlueSkySystem.ViewModels.DashboardViewModel
+@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Dashboard</h1>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card text-dark bg-purple mb-3">
+                    <div class="card-header">Users</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.TotalUsers</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Total Employees</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.TotalEmployees</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-header">Total Cash Advances</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.TotalCashAdvances</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Awaiting Approval</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.AwaitingApprovalCount</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-secondary mb-3">
+                    <div class="card-header">Pending Status</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.PendingStatusCount</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Approved</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.ApprovedCount</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-header">Rejected</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.RejectedCount</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

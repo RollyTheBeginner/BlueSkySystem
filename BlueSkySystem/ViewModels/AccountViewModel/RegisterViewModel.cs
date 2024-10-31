@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlueSkySystem.ViewModels
+namespace BlueSkySystem.ViewModels.AccountViewModel
 {
     public class RegisterViewModel
     {

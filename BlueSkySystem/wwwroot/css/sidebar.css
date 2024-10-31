@@ -1,0 +1,190 @@
+﻿/* Importing Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Universal Sidebar Styles */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 16px;
+    left: 10px;
+    border-radius: 16px;
+    background: #ffffff;
+    min-height: calc(100vh - 32px);
+    max-height: max-content;
+    border: 1px solid #e0e0e0;
+    transition: width 0.4s ease;
+}
+
+    /* Sidebar Collapsed State */
+    .sidebar.collapsed {
+        width: 80px;
+        overflow: hidden;
+    }
+
+.collapsed + .content {
+    margin-left: 0;
+}
+/* Sidebar Header Styles */
+.sidebar-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+    .sidebar-header .header-logo {
+        display: flex;
+        align-items: center;
+    }
+
+        .sidebar-header .header-logo img {
+            width: 60px;
+            height: 60px;
+            display: block;
+            object-fit: contain;
+            margin-right: 8px;
+        }
+
+    .sidebar-header .toggler {
+        position: absolute;
+        right: 20px;
+        height: 35px;
+        width: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background: #ffffff;
+        font-size: 1.75rem;
+        padding: 15px;
+        transition: background 0.4s;
+    }
+
+.sidebar.collapsed .sidebar-header .toggler {
+    transform: translate(-4px, 65px);
+}
+
+.sidebar-header .toggler:hover {
+    background: #e0e0e0;
+}
+
+.sidebar-header .toggler span {
+    font-size: 1.75rem;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav .nav-list {
+    list-style: none;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transform: translateY(15px);
+}
+
+.sidebar.collapsed .sidebar-nav .primary-nav {
+    transform: translateY(65px);
+}
+
+.sidebar-nav .nav-link {
+    color: #000000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+    .sidebar-nav .nav-link:hover {
+        color: #ffffff;
+        background: #e0e0e0;
+    }
+
+    .sidebar-nav .nav-link .nav-label {
+        transition: opacity 0.4s ease;
+    }
+
+.sidebar.collapsed .sidebar-nav .nav-link .nav-label {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar-nav .nav-item {
+    position: relative;
+}
+
+.sidebar-nav .nav-tooltip {
+    position: absolute;
+    top: -10px;
+    opacity: 0;
+    color: #000000;
+    pointer-events: none;
+    left: calc(100% + 25px);
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: #e0e0e0;
+    white-space: nowrap;
+    box-shadow: 0 5px 10px #e0e0e0;
+    transition: 0 ease;
+}
+
+.sidebar-nav .nav-item:hover .nav-tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(50%);
+    transition: 0.4s ease;
+}
+
+/* Secondary Bottom Nav */
+.sidebar-nav .secondary-nav {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    opacity: 1;
+}
+
+.secondary-nav.collapsed .nav-link .nav-label {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Media Query for Sidebar */
+@media (max-width: 1024px) {
+    .sidebar {
+        margin: 13px;
+        width: calc(100% - 28px);
+    }
+
+    .sidebar-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: #e0e0e0;
+        padding: 8px 10px;
+        border-radius: 16px;
+    }
+
+        .sidebar-header .header-logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+    .sidebar-nav .nav-list {
+        padding: 0 10px;
+    }
+
+    .sidebar-nav .nav-link {
+        gap: 10px;
+        padding: 10px;
+        font-size: 0.94rem;
+    }
+
+        .sidebar-nav .nav-link .nav-icon {
+            font-size: 1.37rem;
+        }
+}
+

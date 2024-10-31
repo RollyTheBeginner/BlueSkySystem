@@ -1,161 +1,170 @@
 ﻿@model CashAdvance
 @{
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto rounded border p-3">
+                <h2 class="text-center mb-5">Details</h2>
+                <form>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Voucher No.</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.Id)" readonly />
+                        </div>
+                    </div>
 
-<div class="row">
-    <div class="col-md-8 mx-auto rounded border p-3">
-        <h2 class="text-center mb-5">Details</h2>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">First Name:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.FirstName)" readonly />
+                        </div>
+                    </div>
 
-        <form>
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Voucher No.</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.Id)" readonly />
-                </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Middle Name:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.MiddleName)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Last Name:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.LastName)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Full Name:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.FullName)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Department:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.Department)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Date Submitted:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.DateSubmitted)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Date Required:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.DateRequired)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Purpose:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.Purpose)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Amount:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.Amount)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Electronic Signature:</label>
+                        <div class="col-sm-8">
+                            <img src="/ESignature/@Html.DisplayFor(m => m.ImageFileName1)" width="150" alt="Electronic Signature" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Cover Letter:</label>
+                        <div class="col-sm-8">
+                            @if (!string.IsNullOrEmpty(Model.CoverLetterName))
+                            {
+                                <span>@Model.CoverLetterName</span>
+                                <a href="@Url.Action("DownloadCoverLetter", "CashAdvances", new { filename = Model.CoverLetterName })" class="btn btn-link">Download Cover Letter</a>
+                            }
+                            else
+                            {
+                                <span>No cover letter uploaded.</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Recommending Approval:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.RecommendingApprovalId)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Approved By:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.ApprovedById)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Amount Received By:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.AmountReceivedby)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Created By:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.CreatedById)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Created On:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.CreatedOn)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Modified By:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.ModifiedById)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Modified On:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="@Html.DisplayFor(m => m.ModifiedOn)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-sm-6 d-grid">
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                        </div>
+                        <div class="col-sm-6 d-grid">
+                            <a class="btn btn-outline-primary" asp-controller="CashAdvances" asp-action="Index" role="button">Back to List</a>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">First Name:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.FirstName)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Middle Name:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.MiddleName)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Last Name:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.LastName)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Full Name:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.FullName)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Department:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.Department)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Date Submitted:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.DateSubmitted)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Date Required:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.DateRequired)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Purpose:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.Purpose)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Amount:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.Amount)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Electronic Signature:</label>
-                <div class="col-sm-8">
-                    <img src="/ESignature/@Html.DisplayFor(m => m.ImageFileName1)" width="150" alt="Electronic Signature" />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Cover Letter:</label>
-                <div class="col-sm-8">
-                    @if (!string.IsNullOrEmpty(Model.CoverLetterName))
-                    {
-                        <span>@Model.CoverLetterName</span>
-                        <a href="@Url.Action("DownloadCoverLetter", "CashAdvances", new { filename = Model.CoverLetterName })" class="btn btn-link">Download Cover Letter</a>
-                    }
-                    else
-                    {
-                        <span>No cover letter uploaded.</span>
-                    }
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Recommending Approval:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.RecommendingApprovalId)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Approved By:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.ApprovedById)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Amount Received By:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.AmountReceivedby)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Created By:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.CreatedById)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Created On:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.CreatedOn)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Modified By:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.ModifiedById)" readonly />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label">Modified On:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" value="@Html.DisplayFor(m => m.ModifiedOn)" readonly />
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-sm-6 d-grid">
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-                </div>
-                <div class="col-sm-6 d-grid">
-                    <a class="btn btn-outline-primary" asp-controller="CashAdvances" asp-action="Index" role="button">Back to List</a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</body>
+</html>

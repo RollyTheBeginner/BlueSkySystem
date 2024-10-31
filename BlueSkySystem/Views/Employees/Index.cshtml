@@ -3,77 +3,86 @@
 @{
     ViewData["Title"] = "Index";
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Employee List</h1>
 
-<h1>Employee List</h1>
-
-<p>
-    <a class="btn btn-primary" asp-action="Create">Add New Employee</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EmpNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Designation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmpNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Department)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Designation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BirthDate)
-                </td>
-                <td>
-                    <div class="input-group">
-                        <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-                            Action
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-item">
-                                <a asp-action="Edit" asp-route-id="@item.EmpNo" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i> Edit</a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a asp-action="Details" asp-route-id="@item.EmpNo" class="btn btn-warning btn-sm"><i class="bi bi-eye"></i> Details</a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a asp-action="Delete" asp-route-id="@item.EmpNo" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="bi bi-trash"></i> Delete</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <p>
+            <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-circle"></i> Add New Employee</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmpNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Department)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Designation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BirthDate)
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmpNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Department)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Designation)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BirthDate)
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                    Action
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item">
+                                        <a asp-action="Edit" asp-route-id="@item.EmpNo" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i> Edit</a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a asp-action="Details" asp-route-id="@item.EmpNo" class="btn btn-warning btn-sm"><i class="bi bi-eye"></i> Details</a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a asp-action="Delete" asp-route-id="@item.EmpNo" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="bi bi-trash"></i> Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+</body>
+</html>

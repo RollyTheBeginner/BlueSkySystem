@@ -1,5 +1,5 @@
 ﻿using BlueSkySystem.Models;
-using BlueSkySystem.ViewModels;
+using BlueSkySystem.ViewModels.AccountViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

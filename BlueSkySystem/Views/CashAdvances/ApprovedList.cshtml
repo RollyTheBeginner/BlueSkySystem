@@ -4,21 +4,20 @@
     <link rel="stylesheet" href="~/css/print.css" media="print" />
 }
 
-<h1>Cash Advance Overview</h1>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash Advance Form</title>
 </head>
-
 <body>
+    <div class="container mt-4">
+        <h1>Approved List</h1>
 
     <div class="row mb-5">
         <div class="col">
             <p>
-                <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create">Apply Cash Advance</a>
+                    <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create"> <i class="bi bi-plus-circle"></i> Apply Cash Advance</a>
             </p>
         </div>
         <div class="col"></div>
@@ -115,7 +114,10 @@
                         <td style="text-align: center; padding: 5px; vertical-align: top;">
                             <strong>Approved by:</strong>
 
-                            <!-- E-Signature of Recommending Approval -->
+                            <!-- E-Signature of Approved by: -->
+                            <div style="text-align: center;">
+                                <img src="~/ApproversESignature/Sample1.png" alt="Recommender's Signature" style="width: 100px;" />
+                            </div>
 
                             <div style="text-align: center;">
                                 @cashadvances.ApprovedById
@@ -199,13 +201,14 @@
                             <span class="badge
                             @(cashadvances.CashAdvanceStatus.Name == "Approved" ? "bg-success" :
                               cashadvances.CashAdvanceStatus.Name == "Rejected" ? "bg-danger" :
+                              cashadvances.CashAdvanceStatus.Name == "Awaiting Approval" ? "bg-info" : // New condition for Awaiting Approval
                               "bg-secondary")">
                                 @cashadvances.CashAdvanceStatus.Name
                             </span>
                         }
                         else
                         {
-                            <span class="badge bg-secondary">Pending</span>
+                            <span class="badge bg-primary">Pending</span>
                         }
                     </td>
 

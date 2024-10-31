@@ -1,11 +1,21 @@
 ﻿@model List<CashAdvance>
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<Users> signInManager
 
-<h1>Cash Advance Overview</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Rejected List</h1>
 
 <div class="row mb-5">
     <div class="col">
         <p>
-            <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create">Apply Cash Advance</a>
+                    <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create"> <i class="bi bi-plus-circle"></i> Apply Cash Advance</a>
         </p>
     </div>
     <div class="col"></div>
@@ -66,13 +76,14 @@
                         <span class="badge
                             @(cashadvances.CashAdvanceStatus.Name == "Approved" ? "bg-success" :
                               cashadvances.CashAdvanceStatus.Name == "Rejected" ? "bg-danger" :
+                              cashadvances.CashAdvanceStatus.Name == "Awaiting Approval" ? "bg-info" : // New condition for Awaiting Approval
                               "bg-secondary")">
                             @cashadvances.CashAdvanceStatus.Name
                         </span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">Pending</span>
+                        <span class="badge bg-primary">Pending</span>
                     }
                 </td>
 
@@ -84,21 +95,34 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li>
-                                <a asp-action="Edit" asp-route-id="@cashadvances.Id" class="dropdown-item"><i class="bi bi-pencil"></i> Edit</a>
-                            </li>
-                            <li>
-                                <a asp-action="Details" asp-route-id="@cashadvances.Id" class="dropdown-item"><i class="bi bi-eye"></i> Details</a>
+                                <a asp-action="Edit" asp-route-id="@cashadvances.Id" class="dropdown-item text-primary"><i class="bi bi-pencil"></i> Edit</a>
                             </li>
                             <li>
                                 <a asp-action="Delete" asp-route-id="@cashadvances.Id" class="dropdown-item text-danger" onclick="return confirm('Are you sure?')">
                                     <i class="bi bi-trash"></i> Delete
                                 </a>
                             </li>
+                            @if (signInManager.IsSignedIn(User) && (User.IsInRole("Department Head")))
+                            {
+                                <li>
+                                    <a asp-action="PendingStatusCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item" style="color: #add8e6;">
+                                        <i class="bi bi-hourglass"></i> Approve
+                                    </a>
+                                </li>
+                            }
+
+                            @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
+                            {
+                                <li>
+                                    <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success">
+                                        <i class="bi bi-check"></i> Approve
+                                    </a>
+                                </li>
+                            }
                             <li>
-                                <a asp-action="ApproveCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-success"><i class="bi bi-check"></i> Approve</a>
-                            </li>
-                            <li>
-                                <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning"><i class="bi bi-x-circle"></i> Reject</a>
+                                <a asp-action="RejectCashAdvance" asp-route-id="@cashadvances.Id" class="dropdown-item text-warning">
+                                    <i class="bi bi-x-circle"></i> Reject
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -108,3 +132,5 @@
         }
     </tbody>
 </table>
+</body>
+</html>
