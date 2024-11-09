@@ -68,7 +68,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" role="button" data-bs-toggle="collapse" href="#cashAdvanceCollapse" aria-expanded="false" aria-controls="cashAdvanceCollapse">
                             <i class="bi bi-cash-stack"></i>
-                            <span class="nav-label">List</span>
+                            <span class="nav-label">Blue Sky List</span>
                         </a>
                         <span class="nav-tooltip">CashAdvance List</span>
                         <div class="collapse" id="cashAdvanceCollapse">
@@ -102,6 +102,45 @@
                             </ul>
                         </div>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" role="button" data-bs-toggle="collapse" href="#swisspharmaCollapse" aria-expanded="false" aria-controls="swisspharmaCollapse">
+                            <i class="bi bi-cash-stack"></i>
+                            <span class="nav-label">Swisspharma List</span>
+                        </a>
+                        <span class="nav-tooltip">CashAdvance List</span>
+                        <div class="collapse" id="swisspharmaCollapse">
+                            <ul class="list-unstyled ms-3">
+                                @if (User.IsInRole("Department Head"))
+                                {
+                                    <li>
+                                        <a class="nav-link" asp-controller="CashAdvances" asp-action="AwaitingApproval">
+                                            <i class="bi bi-clock"></i> Awaiting List
+                                        </a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li>
+                                        <a class="nav-link" asp-controller="CashAdvances" asp-action="PendingListSwiss">
+                                            <i class="bi bi-hourglass-split"></i> Pending List
+                                        </a>
+                                    </li>
+                                }
+                                <li>
+                                    <a class="nav-link" asp-controller="CashAdvances" asp-action="ApprovedListSwiss">
+                                        <i class="bi bi-check-circle"></i> Approved List
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-controller="CashAdvances" asp-action="RejectedListSwiss">
+                                        <i class="bi bi-x-circle"></i> Rejected List
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
                 }
                 <li class="nav-item">
                     <a class="nav-link text-dark" role="button" data-bs-toggle="collapse" href="#cashAdvanceCollapseForms" aria-expanded="false" aria-controls="cashAdvanceCollapseForms">
@@ -137,7 +176,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                 </li>
-                                    <partial name="_LoginPartial" />
+                                <partial name="_LoginPartial" />
                             </ul>
                         </div>
                     </div>

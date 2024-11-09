@@ -15,6 +15,7 @@ namespace BlueSkySystem.Data
         public DbSet<CashAdvance> CashAdvances { get; set; }
         public DbSet<SalaryLoan> SalaryLoans { get; set; } // Changed to plural for consistency
         public DbSet<SalaryLoanStatus> SalaryLoanStatuses { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<CashAdvanceStatus> CashAdvanceStatuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,7 +36,14 @@ namespace BlueSkySystem.Data
                 new SalaryLoanStatus { Id = 2, Name = "Pending Status", Description = "Pending Status." },
                 new SalaryLoanStatus { Id = 3, Name = "Approved", Description = "Approved for processing." },
                 new SalaryLoanStatus { Id = 4, Name = "Rejected", Description = "Rejected." }
-            ); // Closing parenthesis added here
+            ); 
+
+            // Seed initial company data
+            modelBuilder.Entity<Company>().HasData(
+               new Company { Id = 1, Name = "BlueSky", Description = "Blue Sky Trading Inc., Co." },
+               new Company { Id = 2, Name = "Swisspharma", Description = "Swisspharma Research Laboratories, Inc." }
+           );// Closing parenthesis added here
+
         }
     }
 }

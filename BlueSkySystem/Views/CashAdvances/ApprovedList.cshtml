@@ -1,5 +1,6 @@
 ﻿@model List<CashAdvance>
 @using BlueSkySystem.Helpers
+
 @{
     <link rel="stylesheet" href="~/css/print.css" media="print" />
 }
@@ -96,14 +97,17 @@
                         </td>
 
                         <!-- This cell contains Recommending Approval -->
-                        <td style="text-align: center; padding: 5px; vertical-align: top;">
+                            <td style="text-align: center; padding: 5px; vertical-align: text-bottom;">
                             <strong>Recommending Approval:</strong>
 
-                            <!-- E-Signature of Recommending Approval -->
+                            <!-- E-Signature of Recommending Approval 
                             <div style="text-align: center;">
                                 <img src="~/ApproversESignature/Sample.png" alt="Recommender's Signature" style="width: 100px;" />
                             </div>
-
+                                -->
+                                <br />
+                                <br />
+                                <br />
                             <!-- bottom the purpose text -->
                             <div style="text-align: center;">
                                 @cashadvances.RecommendingApprovalId
@@ -111,14 +115,17 @@
                         </td>
 
                         <!-- This cell contains Approved by: -->
-                        <td style="text-align: center; padding: 5px; vertical-align: top;">
+                        <td style="text-align: center; padding: 5px; vertical-align: text-bottom;">
                             <strong>Approved by:</strong>
 
-                            <!-- E-Signature of Approved by: -->
+                            <!-- E-Signature of Approved by:
                             <div style="text-align: center;">
                                 <img src="~/ApproversESignature/Sample1.png" alt="Recommender's Signature" style="width: 100px;" />
                             </div>
-
+                                 -->
+                                 <br />
+                                <br />
+                                <br />
                             <div style="text-align: center;">
                                 @cashadvances.ApprovedById
                             </div>
@@ -129,7 +136,7 @@
                             <!-- Set vertical-align to top -->
                             <strong>Amount Received by:</strong>
 
-                            <div style="text-align: center; line-height: 80px;">
+                            <div style="text-align: center; line-height: 50px;">
                                 <!-- Center the purpose text -->
                                 @cashadvances.AmountReceivedby
                             </div>

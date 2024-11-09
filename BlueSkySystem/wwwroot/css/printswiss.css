@@ -1,0 +1,48 @@
+﻿/* print.css */
+@media printswiss {
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 12pt; /* Adjust font size for print */
+    }
+
+    .container {
+        border: none; /* Remove border for print */
+        padding: 0; /* Adjust padding for print */
+        width: 100%; /* Make the container full-width */
+    }
+
+    .header {
+        display: flex;
+        align-items: center; /* Vertically center the items */
+        padding: 500px 200px; /* Adjust padding */
+        margin-top: 0; /* Set top margin to zero */
+        background-color: #f0f8ff;
+    }
+
+    .logo {
+        width: 25px; /* Set the logo width */
+        height: 25px; /* Set the logo height */
+        margin-right: 5px; /* Space between logo and text */
+    }
+
+    /* Styles for the table */
+    table {
+        width: 100%; /* Full width for tables in print */
+        border-collapse: collapse; /* Remove space between borders */
+    }
+
+    td {
+        text-align: left; /* Center text in cells */
+        padding: 5px; /* Padding for cells */
+        vertical-align: top; /* Align content to the top */
+    }
+
+    .signature-image {
+        width: 100px; /* Set image width */
+    }
+
+    .name-text {
+        line-height: 80px; /* Adjust line height for text */
+    }
+}

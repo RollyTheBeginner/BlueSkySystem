@@ -1,19 +1,23 @@
-﻿using BlueSkySystem.Models;
+﻿using BlueSkySystem.Data;
+using BlueSkySystem.Models;
 using BlueSkySystem.ViewModels.AccountViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlueSkySystem.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ApplicationDbContext context;
         private readonly SignInManager<Users> signInManager;
         private readonly UserManager<Users> userManager;
 
-        public AccountController(SignInManager<Users> signInManager, UserManager<Users> userManager)
+        public AccountController(SignInManager<Users> signInManager, UserManager<Users> userManager, ApplicationDbContext context)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.context = context;
         }
         public IActionResult Login()
         {
@@ -56,6 +60,7 @@ namespace BlueSkySystem.Controllers
                     FirstName = model.FirstName,
                     MiddleName = model.MiddleName,
                     LastName = model.LastName,
+                    CompanyId = 1 // Set the company name here
                 };
 
                 var result = await userManager.CreateAsync(users, model.Password);
@@ -147,6 +152,13 @@ namespace BlueSkySystem.Controllers
                 ModelState.AddModelError("", "Something went wrong. try again.");
                 return View(model);
             }
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var users = context.Users.Include(c => c.Company).OrderByDescending(user => user.Id).ToList();
+
+            return View(users);
         }
 
         public async Task<IActionResult> Logout()

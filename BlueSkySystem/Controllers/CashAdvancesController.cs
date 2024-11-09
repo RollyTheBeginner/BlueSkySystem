@@ -31,30 +31,69 @@ namespace BlueSkySystem.Controllers
             return View(cashadvances);
         }
 
+
+        // Awaiting Approval List
         public IActionResult AwaitingApproval()
         {
-            var cashadvances = context.CashAdvances
-                .Include (ca => ca.CashAdvanceStatus)
-                .Where(ca => ca.CashAdvanceStatus.Name == "Awaiting Approval")
-                .OrderByDescending (ca => ca.Id)
-                .ToList();
-
-            return View(cashadvances);
+            return GetAwaitingCashAdvances();
         }
 
-        public IActionResult PendingListView()
+        public IActionResult AwaitingApprovalSwiss()
+        {
+            return GetAwaitingCashAdvances();
+        }
+
+        private IActionResult GetAwaitingCashAdvances()
         {
             var cashadvances = context.CashAdvances
-                .Include(ca => ca.CashAdvanceStatus)
-                .Where(ca => ca.CashAdvanceStatus.Name == "Pending Status")
+                .Include(ca => ca.CashAdvanceStatus) // Include related status
+                .Where(ca => ca.CashAdvanceStatus.Name == "Awaiting Approval") // Filter by approved status
                 .OrderByDescending(ca => ca.Id)
                 .ToList();
 
             return View(cashadvances);
         }
 
+
+
+        // Pending List
+        [Authorize(Roles = "Admin, Department Head")]
+        public IActionResult PendingListView()
+        {
+            return GetPendingCashAdvances();
+        }
+
+        [Authorize(Roles = "Admin, Department Head")]
+        public IActionResult PendingListSwiss()
+        {
+            return GetPendingCashAdvances();
+        }
+
+        private IActionResult GetPendingCashAdvances()
+        {
+            var cashadvances = context.CashAdvances
+                .Include(ca => ca.CashAdvanceStatus) // Include related status
+                .Where(ca => ca.CashAdvanceStatus.Name == "Pending Status") // Filter by approved status
+                .OrderByDescending(ca => ca.Id)
+                .ToList();
+
+            return View(cashadvances);
+        }
+
+
+        // Approve List
         [Authorize(Roles = "Admin, Department Head")]
         public IActionResult ApprovedList()
+        {
+            return GetApprovedCashAdvances();
+        }
+
+        [Authorize(Roles = "Admin, Department Head")]
+        public IActionResult ApprovedListSwiss() // Corrected from ApproveListSwiss to ApprovedListSwiss
+        {
+            return GetApprovedCashAdvances();
+        }
+        private IActionResult GetApprovedCashAdvances()
         {
             var cashadvances = context.CashAdvances
                 .Include(ca => ca.CashAdvanceStatus) // Include related status
@@ -65,12 +104,24 @@ namespace BlueSkySystem.Controllers
             return View(cashadvances);
         }
 
+
+        // Rejected List
         [Authorize(Roles = "Admin, Department Head")]
         public IActionResult RejectedList()
         {
+            return GetRejectedCashAdvances();
+        }
+
+        public IActionResult RejectedListSwiss()
+        {
+            return GetRejectedCashAdvances();
+        }
+
+        private IActionResult GetRejectedCashAdvances()
+        {
             var cashadvances = context.CashAdvances
                 .Include(ca => ca.CashAdvanceStatus) // Include related status
-                .Where(ca => ca.CashAdvanceStatus.Name == "Rejected") // Filter by rejected status
+                .Where(ca => ca.CashAdvanceStatus.Name == "Rejected") // Filter by approved status
                 .OrderByDescending(ca => ca.Id)
                 .ToList();
 
@@ -420,8 +471,6 @@ namespace BlueSkySystem.Controllers
                 cashAdvance.RecommendingApprovalId = currentUser.FullName;
                 cashAdvance.RecommendingApproveOn = DateTime.UtcNow;
 
-                // Set the e-signature file name
-                cashAdvance.ImageFileName2 = Path.Combine("ApproversESignature", $"Sample.png"); // Adjust extension if different
                 await context.SaveChangesAsync();
             }
 
@@ -453,8 +502,6 @@ namespace BlueSkySystem.Controllers
                 cashAdvance.ApprovedById = currentUser.FullName;
                 cashAdvance.ApprovedOn = DateTime.UtcNow;
 
-                // Set the e-signature file name
-                cashAdvance.ImageFileName3 = Path.Combine("ApproversESignature", $"Sample1.png"); // Adjust extension if different
                 await context.SaveChangesAsync();
             }
 

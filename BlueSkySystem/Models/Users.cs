@@ -28,5 +28,12 @@ namespace BlueSkySystem.Models
                 return $"{FirstName?.Trim()} {(MiddleName?.Trim() + " ") ?? ""}{LastName?.Trim()}".Trim();
             }
         }
+
+        // Foreign key to Company
+        [Display(Name = "Company")]
+        public int? CompanyId { get; set; }
+
+        // Navigation property
+        public Company? Company { get; set; }
     }
 }

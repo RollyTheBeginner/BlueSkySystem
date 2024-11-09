@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\ApproversESignature\" />
     <Folder Include="wwwroot\coverletter\" />
     <Folder Include="wwwroot\ESignature\" />
   </ItemGroup>

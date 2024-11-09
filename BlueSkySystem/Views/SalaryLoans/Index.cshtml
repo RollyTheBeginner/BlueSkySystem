@@ -3,7 +3,9 @@
 @using Microsoft.AspNetCore.Identity;
 @inject SignInManager<Users> signInManager
 
-
+@{
+    <link rel="stylesheet" href="~/css/print.css" media="print" />
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -135,6 +137,15 @@
                                             <i class="bi bi-x-circle"></i> Reject
                                         </a>
                                     </li>
+
+                                    @if (salaryloans.SalaryLoanStatus != null && salaryloans.SalaryLoanStatus.Name == "Approved")
+                                    {
+                                        <li>
+                                            <button id="printButton" class="dropdown-item" onclick="printForm('@salaryloans.Id')">
+                                                <i class="bi bi-printer"></i> Print
+                                            </button>
+                                        </li>
+                                    }
                                 </ul>
 
                             </div>
@@ -143,6 +154,33 @@
                 }
             </tbody>
         </table>
+
+        <script>
+            function selectCashAdvance() {
+                var selectedId = document.getElementById('cashAdvanceSelector').value;
+                document.getElementById('printButton').disabled = selectedId === '';
+
+                // Show or hide cash advance details based on selection
+                var containers = document.querySelectorAll('.cash-advance-container');
+                containers.forEach(container => {
+                    container.style.display = (container.getAttribute('data-id') === selectedId) ? 'block' : 'none';
+                });
+            }
+
+            function printForm(selectedId) {
+                var containerToPrint = document.querySelector(`.cash-advance-container[data-id='${selectedId}']`);
+                if (containerToPrint) {
+                    var originalContents = document.body.innerHTML;
+                    document.body.innerHTML = containerToPrint.innerHTML;
+                    window.print();
+                    document.body.innerHTML = originalContents;
+                    selectCashAdvance(); // Reset to show/hide containers again
+                }
+            }
+        </script>
+
+        <script src="~/js/print.js" asp-append-version="true"></script>
+
     </div>
 </body>
 </html>
