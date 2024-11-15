@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlueSkySystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241017012436_EmployeesDetails")]
-    partial class EmployeesDetails
+    [Migration("20241114024713_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,157 @@ namespace BlueSkySystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BlueSkySystem.Models.CashAdvance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("AmountReceivedby")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApprovedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ApprovedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CashAdvanceStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CoverLetterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateRequired")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateSubmitted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageFileName1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageFileName2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageFileName3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecommendingApprovalId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RecommendingApproveOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RejectedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RejectedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CashAdvanceStatusId");
+
+                    b.ToTable("CashAdvances");
+                });
+
+            modelBuilder.Entity("BlueSkySystem.Models.CashAdvanceStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CashAdvanceStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Awaiting Approval.",
+                            Name = "Awaiting Approval"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Pending Status.",
+                            Name = "Pending Status"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Approved for processing.",
+                            Name = "Approved"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Rejected.",
+                            Name = "Rejected"
+                        });
+                });
 
             modelBuilder.Entity("BlueSkySystem.Models.Employee", b =>
                 {
@@ -81,6 +232,154 @@ namespace BlueSkySystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("BlueSkySystem.Models.SalaryLoan.SalaryLoan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("AmountReceivedby")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApprovedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ApprovedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CoverLetterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateSubmitted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageFileName1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageFileName2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageFileName3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RecommendingApprovalId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RecommendingApproveOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RejectedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RejectedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SalaryLoanStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalaryLoanStatusId");
+
+                    b.ToTable("SalaryLoans");
+                });
+
+            modelBuilder.Entity("BlueSkySystem.Models.SalaryLoan.SalaryLoanStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SalaryLoanStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Awaiting Approval.",
+                            Name = "Awaiting Approval"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Pending Status.",
+                            Name = "Pending Status"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Approved for processing.",
+                            Name = "Approved"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Rejected.",
+                            Name = "Rejected"
+                        });
                 });
 
             modelBuilder.Entity("BlueSkySystem.Models.Users", b =>
@@ -293,6 +592,15 @@ namespace BlueSkySystem.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BlueSkySystem.Models.CashAdvance", b =>
+                {
+                    b.HasOne("BlueSkySystem.Models.CashAdvanceStatus", "CashAdvanceStatus")
+                        .WithMany()
+                        .HasForeignKey("CashAdvanceStatusId");
+
+                    b.Navigation("CashAdvanceStatus");
+                });
+
             modelBuilder.Entity("BlueSkySystem.Models.Employee", b =>
                 {
                     b.HasOne("BlueSkySystem.Models.Users", "User")
@@ -302,6 +610,15 @@ namespace BlueSkySystem.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BlueSkySystem.Models.SalaryLoan.SalaryLoan", b =>
+                {
+                    b.HasOne("BlueSkySystem.Models.SalaryLoan.SalaryLoanStatus", "SalaryLoanStatus")
+                        .WithMany()
+                        .HasForeignKey("SalaryLoanStatusId");
+
+                    b.Navigation("SalaryLoanStatus");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

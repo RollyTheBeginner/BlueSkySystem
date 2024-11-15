@@ -313,72 +313,82 @@ namespace BlueSkySystem.Controllers
             // Retrieve the current user from the database
             var currentUser = await context.Users.FindAsync(userId);
 
-            // Check if the user exists
             if (currentUser == null)
             {
                 return NotFound("User not found");
             }
 
-            // Save the image file with a unique name
-            string newFileName2 = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.ImageFile2.FileName);
-            string imageFullPath2 = Path.Combine(environment.WebRootPath, "ApproversESignature", newFileName2);
+            string newFileName2 = cashadvances.ImageFileName2;
+            string newFileName3 = cashadvances.ImageFileName3;
+            string coverLetterOriginalFileName = cashadvances.CoverLetterName;
 
-            using (var stream = System.IO.File.Create(imageFullPath2))
+            // Handle ImageFile2 upload
+            if (cashadvanceDto.ImageFile2 != null && cashadvanceDto.ImageFile2.Length > 0)
             {
-                cashadvanceDto.ImageFile2.CopyTo(stream);
+                newFileName2 = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.ImageFile2.FileName);
+                string imageFullPath2 = Path.Combine(environment.WebRootPath, "ApproversESignature", newFileName2);
+                using (var stream = System.IO.File.Create(imageFullPath2))
+                {
+                    await cashadvanceDto.ImageFile2.CopyToAsync(stream);
+                }
             }
 
-            // Save the image file with a unique name
-            string newFileName3 = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.ImageFile3.FileName);
-            string imageFullPath3 = Path.Combine(environment.WebRootPath, "ApproversESignature", newFileName3);
-
-            using (var stream3 = System.IO.File.Create(imageFullPath2))
+            // Handle ImageFile3 upload
+            if (cashadvanceDto.ImageFile3 != null && cashadvanceDto.ImageFile3.Length > 0)
             {
-                cashadvanceDto.ImageFile2.CopyTo(stream3);
+                newFileName3 = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.ImageFile3.FileName);
+                string imageFullPath3 = Path.Combine(environment.WebRootPath, "ApproversESignature", newFileName3);
+                using (var stream = System.IO.File.Create(imageFullPath3))
+                {
+                    await cashadvanceDto.ImageFile3.CopyToAsync(stream);
+                }
             }
 
-            //update the image file if we have a new image file
-            string newFileName = cashadvances.ImageFileName1;
-            if (cashadvanceDto.ImageFile1 != null)
+            // Handle ImageFile1 upload (update)
+            if (cashadvanceDto.ImageFile1 != null && cashadvanceDto.ImageFile1.Length > 0)
             {
-                newFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-                newFileName += Path.GetExtension(cashadvanceDto.ImageFile1.FileName);
+                string newFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.ImageFile1.FileName);
+                string imageFullPath = Path.Combine(environment.WebRootPath, "ESignature", newFileName);
 
-                string imageFullPath = environment.WebRootPath + "/ESignature/" + newFileName;
                 using (var stream = System.IO.File.Create(imageFullPath))
                 {
-                    cashadvanceDto.ImageFile1.CopyTo(stream);
+                    await cashadvanceDto.ImageFile1.CopyToAsync(stream);
                 }
 
-                //delete the old image
-                string oldImageFullPath = environment.WebRootPath + "/ESignature/" + cashadvances.ImageFileName1;
-                System.IO.File.Delete(oldImageFullPath);
+                // Delete the old image file
+                string oldImageFullPath = Path.Combine(environment.WebRootPath, "ESignature", cashadvances.ImageFileName1);
+                if (System.IO.File.Exists(oldImageFullPath))
+                {
+                    System.IO.File.Delete(oldImageFullPath);
+                }
+
+                // Update image name
+                cashadvances.ImageFileName1 = newFileName;
             }
 
-
-            // update the cover letter file if we have a new cover letter file
-            string coverLetterOriginalFileName = cashadvances.CoverLetterName;
-            if (cashadvanceDto.CoverLetter != null)
+            // Handle CoverLetter upload (update)
+            if (cashadvanceDto.CoverLetter != null && cashadvanceDto.CoverLetter.Length > 0)
             {
-                coverLetterOriginalFileName = cashadvanceDto.CoverLetter.FileName;
-                coverLetterOriginalFileName += Path.GetExtension(cashadvanceDto.CoverLetter.FileName);
+                coverLetterOriginalFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(cashadvanceDto.CoverLetter.FileName);
+                string coverLetterFullPath = Path.Combine(environment.WebRootPath, "coverletter", coverLetterOriginalFileName);
 
-                string coverLetterFullPath = environment.WebRootPath + "/coverletter/" + coverLetterOriginalFileName;
                 using (var stream = System.IO.File.Create(coverLetterFullPath))
                 {
-                    cashadvanceDto.CoverLetter.CopyTo(stream);
+                    await cashadvanceDto.CoverLetter.CopyToAsync(stream);
                 }
 
-                // Delete the old cover letter if it exists
-                string oldCoverLetterPath = Path.Combine(environment.WebRootPath, "/coverletter/", cashadvances.CoverLetterName);
+                // Delete old cover letter file if it exists
+                string oldCoverLetterPath = Path.Combine(environment.WebRootPath, "coverletter", cashadvances.CoverLetterName);
                 if (System.IO.File.Exists(oldCoverLetterPath))
                 {
                     System.IO.File.Delete(oldCoverLetterPath);
                 }
+
+                // Update cover letter name
+                cashadvances.CoverLetterName = coverLetterOriginalFileName;
             }
 
-
-            //update the product in the database
+            // Update other fields
             cashadvances.FirstName = cashadvanceDto.FirstName;
             cashadvances.MiddleName = cashadvanceDto.MiddleName;
             cashadvances.LastName = cashadvanceDto.LastName;
@@ -387,11 +397,11 @@ namespace BlueSkySystem.Controllers
             cashadvances.DateRequired = cashadvanceDto.DateRequired;
             cashadvances.Purpose = cashadvanceDto.Purpose;
             cashadvances.Amount = cashadvanceDto.Amount;
-            cashadvances.ImageFileName1 = newFileName;
-            cashadvances.CoverLetterName = coverLetterOriginalFileName;
             cashadvances.ModifiedById = currentUser.FullName;
             cashadvances.ModifiedOn = DateTime.Now;
             cashadvances.AmountReceivedby = cashadvanceDto.AmountReceivedby;
+
+            // Only update ImageFileName2 and ImageFileName3 if they were changed
             cashadvances.ImageFileName2 = newFileName2;
             cashadvances.ImageFileName3 = newFileName3;
 

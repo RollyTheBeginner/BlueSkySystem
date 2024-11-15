@@ -15,15 +15,6 @@
     transition: width 0.4s ease;
 }
 
-    /* Sidebar Collapsed State */
-    .sidebar.collapsed {
-        width: 80px;
-        overflow: hidden;
-    }
-
-.collapsed + .content {
-    margin-left: 0;
-}
 /* Sidebar Header Styles */
 .sidebar-header {
     position: relative;
@@ -40,10 +31,17 @@
         .sidebar-header .header-logo img {
             width: 60px;
             height: 60px;
-            display: block;
             object-fit: contain;
             margin-right: 8px;
         }
+
+    .sidebar-header .logo-text {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 1.25rem; /* Adjust the size of the text */
+        color: #333;
+        line-height: 1; /* Ensure the text aligns with the logo vertically */
+    }
 
     .sidebar-header .toggler {
         position: absolute;
@@ -62,17 +60,13 @@
         transition: background 0.4s;
     }
 
-.sidebar.collapsed .sidebar-header .toggler {
-    transform: translate(-4px, 65px);
-}
+        .sidebar-header .toggler:hover {
+            background: #e0e0e0;
+        }
 
-.sidebar-header .toggler:hover {
-    background: #e0e0e0;
-}
-
-.sidebar-header .toggler span {
-    font-size: 1.75rem;
-}
+        .sidebar-header .toggler span {
+            font-size: 1.75rem;
+        }
 
 /* Sidebar Navigation */
 .sidebar-nav .nav-list {
@@ -84,9 +78,6 @@
     transform: translateY(15px);
 }
 
-.sidebar.collapsed .sidebar-nav .primary-nav {
-    transform: translateY(65px);
-}
 
 .sidebar-nav .nav-link {
     color: #000000;
@@ -108,10 +99,6 @@
         transition: opacity 0.4s ease;
     }
 
-.sidebar.collapsed .sidebar-nav .nav-link .nav-label {
-    opacity: 0;
-    pointer-events: none;
-}
 
 .sidebar-nav .nav-item {
     position: relative;
@@ -145,11 +132,6 @@
     bottom: 30px;
     width: 100%;
     opacity: 1;
-}
-
-.secondary-nav.collapsed .nav-link .nav-label {
-    opacity: 0;
-    pointer-events: none;
 }
 
 /* Media Query for Sidebar */
@@ -187,4 +169,3 @@
             font-size: 1.37rem;
         }
 }
-

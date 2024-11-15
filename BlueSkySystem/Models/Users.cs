@@ -29,11 +29,5 @@ namespace BlueSkySystem.Models
             }
         }
 
-        // Foreign key to Company
-        [Display(Name = "Company")]
-        public int? CompanyId { get; set; }
-
-        // Navigation property
-        public Company? Company { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System;
-using BlueSkySystem.Migrations;
 using BlueSkySystem.Models;
 
 namespace BlueSkySystem.Controllers

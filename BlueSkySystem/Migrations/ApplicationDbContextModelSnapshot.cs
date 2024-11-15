@@ -173,54 +173,6 @@ namespace BlueSkySystem.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BlueSkySystem.Models.Company", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ModifiedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Companies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Blue Sky Trading Inc., Co.",
-                            Name = "BlueSky"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Swisspharma Research Laboratories, Inc.",
-                            Name = "Swisspharma"
-                        });
-                });
-
             modelBuilder.Entity("BlueSkySystem.Models.Employee", b =>
                 {
                     b.Property<int>("EmpNo")
@@ -435,9 +387,6 @@ namespace BlueSkySystem.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -495,8 +444,6 @@ namespace BlueSkySystem.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -669,15 +616,6 @@ namespace BlueSkySystem.Migrations
                         .HasForeignKey("SalaryLoanStatusId");
 
                     b.Navigation("SalaryLoanStatus");
-                });
-
-            modelBuilder.Entity("BlueSkySystem.Models.Users", b =>
-                {
-                    b.HasOne("BlueSkySystem.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId");
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

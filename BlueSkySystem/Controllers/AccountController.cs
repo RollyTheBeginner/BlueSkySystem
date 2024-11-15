@@ -60,7 +60,6 @@ namespace BlueSkySystem.Controllers
                     FirstName = model.FirstName,
                     MiddleName = model.MiddleName,
                     LastName = model.LastName,
-                    CompanyId = 1 // Set the company name here
                 };
 
                 var result = await userManager.CreateAsync(users, model.Password);
@@ -156,7 +155,7 @@ namespace BlueSkySystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var users = context.Users.Include(c => c.Company).OrderByDescending(user => user.Id).ToList();
+            var users = context.Users.OrderByDescending(user => user.Id).ToList();
 
             return View(users);
         }

@@ -15,14 +15,9 @@
     <div class="container mt-4">
         <h1>Approved List</h1>
 
-        <div class="row mb-5">
-            <div class="col">
-                <p>
-                    <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create"> <i class="bi bi-plus-circle"></i> Apply Cash Advance</a>
-                </p>
-            </div>
-            <div class="col"></div>
-        </div>
+        <p>
+            <a class="btn btn-primary" asp-controller="CashAdvances" asp-action="Create"> <i class="bi bi-plus-circle"></i> Apply Cash Advance</a>
+        </p>
 
         <div id="printable-area">
             @foreach (var cashadvances in Model)
